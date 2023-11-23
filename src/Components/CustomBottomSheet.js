@@ -23,12 +23,12 @@ const BottomSheetComponent = ({
       }}>
       <View>
         <View style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: 18, color: '#84F1D0'}}>{title}</Text>
+          <Text style={{fontSize: 18, color: 'darkgreen'}}>{title}</Text>
           <Text style={{fontSize: 18, color: 'black'}}>{amountOne}</Text>
         </View>
 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{fontSize: 18, color: '#84F1D0'}}>{titleTwo}</Text>
+          <Text style={{fontSize: 18, color: 'darkred'}}>{titleTwo}</Text>
           <Text style={{fontSize: 18, color: 'black'}}>{amountTwo}</Text>
         </View>
       </View>

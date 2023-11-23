@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {handleAddTransaction} from '../Utils';
 function CustomExpenseDesign({buttonColor, borderColor}) {
   const {
     addExpense,
@@ -43,20 +44,16 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
   const handleDescription = newDescription => {
     setAddExpDescription(newDescription);
   };
-  //
+
   const handleAddExpense = () => {
-    if (addExpDescription && selectedDate && addExpense) { 
-      setAllData(prevData => ({
-        ...prevData,
-        expense: [
-          ...prevData.expense,
-          {
-            expDescription: addExpDescription,
-            date: selectedDate,
-            expense: parseFloat(addExpense),
-          },
-        ],
-      }));
+    if (addExpDescription && selectedDate && addExpense) {
+      handleAddTransaction(
+        setAllData,
+        addExpDescription,
+        'Expense',
+        parseFloat(addExpense),
+        selectedDate,
+      );
     } else {
       Alert.alert('one or more fields left empty');
     }

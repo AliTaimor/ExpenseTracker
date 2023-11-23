@@ -10,6 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {handleAddTransaction} from '../Utils';
+
 function CustomIncomeDesign({buttonColor, borderColor}) {
   const {
     addIncome,
@@ -48,26 +50,20 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
   const handleDescription = newDescription => {
     setAddDescription(newDescription);
   };
-  //
 
   const handleAddIncome = () => {
     if (addDescription && selectedDate && addIncome) {
-      setAllData(prevData => ({
-        ...prevData,
-        income: [
-          ...prevData.income,
-          {
-            description: addDescription,
-            date: selectedDate,
-            income: parseFloat(addIncome),
-          },
-        ],
-      }));
+      handleAddTransaction(
+        setAllData,
+        addDescription,
+        'Income',
+        parseFloat(addIncome),
+        selectedDate,
+      );
     } else {
       Alert.alert('one or more fields left empty');
     }
   };
-  console.log('my data', allData);
 
   return (
     <View style={styles.container}>

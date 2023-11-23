@@ -15,8 +15,9 @@ const App = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
  // all data for income and expense 
-  const [allData, setAllData] = useState({income:[], expense:[] });
+  // const [allData, setAllData] = useState({income:[], expense:[] });
 
+  const [allData, setAllData] = useState([]);
 
   return <MainContext.Provider value={{addIncome, setAddIncome, addExpense, setAddExpense, addDescription, setAddDescription, selectedDate, setSelectedDate, isDatePickerVisible, setDatePickerVisibility, addExpDescription, setAddExpDescription, allData, setAllData}}><Navigation/></MainContext.Provider>;
 

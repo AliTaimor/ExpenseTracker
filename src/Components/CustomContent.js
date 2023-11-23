@@ -4,42 +4,37 @@ import {MainContext} from '../Contexts/MainContext';
 
 function CustomContent() {
   const {allData} = useContext(MainContext);
+
   // calculating balance
-  const balance = () => {
-    var totalInc = allData.income.reduce(
-      (total, curr) => total + curr.income,
-      0,
-    );
-    var totalExp = allData.expense.reduce(
-      (total, curr) => total + curr.expense,
-      0,
-    );
-    return totalInc - totalExp;
-  };
-  //adding incomes
-  const calculateTotalIncome = () => {
-    return allData.income.reduce((total, curr) => total + curr.income, 0);
-  };
-  //adding expenses
-  const calculateTotalExpense = () => {
-    return allData.expense.reduce((total, curr) => total + curr.expense, 0);
-  };
+
+  const totalIncome = allData
+    .filter(currElem => currElem.type === 'Income')
+    .reduce((acc, currElem) => acc + currElem.data, 0);
+
+  const totalExpense = allData
+    .filter(currElem => currElem.type === 'Expense')
+    .reduce((acc, currElem) => acc + currElem.data, 0);
+
+  const totalBalance = totalIncome - totalExpense;
+
+  console.log('total income', totalIncome);
+
   return (
     <View style={styles.contentContainer}>
       <View>
         <Text style={styles.incomeText}>Income</Text>
         {/* added the state prop to show the updated income data */}
-        <Text style={styles.incomeContent}>{calculateTotalIncome()} Rs</Text>
+        <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
       </View>
       <View>
         <Text style={styles.expenseText}>Expense</Text>
         {/* added the state prop to show the updated expense data */}
-        <Text style={styles.expenseContent}>{calculateTotalExpense()} Rs</Text>
+        <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
       </View>
       <View>
         <Text style={styles.balanceText}>Balance</Text>
         {/* calculated balance on the top of the screen and shown on the balance content */}
-        <Text style={styles.balanceContent}>{balance()} RS</Text>
+        <Text style={styles.balanceContent}>{totalBalance} RS</Text>
       </View>
     </View>
   );

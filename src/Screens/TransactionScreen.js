@@ -12,77 +12,94 @@ import CustomBottomSheet from '../Components/CustomBottomSheet';
 import {DeleteIcon} from '../Assets/Icons';
 
 function TransactionScreen() {
-  const {
-    allData,
-    setAllData,
-  } = useContext(MainContext);
+  const {allData, setAllData} = useContext(MainContext);
 
   // calculating balance
-  const balance = () => {
-    var totalInc = allData.income.reduce(
-      (total, curr) => total + curr.income,
-      0,
-    );
-    var totalExp = allData.expense.reduce(
-      (total, curr) => total + curr.expense,
-      0,
-    );
-    return totalInc - totalExp;
-  };
-  //adding incomes
-  const calculateTotalIncome = () => {
-    return allData.income.reduce((total, curr) => total + curr.income, 0);
-  };
-  //adding expenses
-  const calculateTotalExpense = () => {
-    return allData.expense.reduce((total, curr) => total + curr.expense, 0);
-  };
+
+  const totalIncome = allData
+    .filter(currElem => currElem.type === 'Income')
+    .reduce((acc, currElem) => acc + currElem.data, 0);
+
+  const totalExpense = allData
+    .filter(currElem => currElem.type === 'Expense')
+    .reduce((acc, currElem) => acc + currElem.data, 0);
+
+  const totalBalance = totalIncome - totalExpense;
+
   //deleting all data
   const clearAll = () => {
-    setAllData({income: [], expense: []});
+    setAllData([]);
   };
 
   const deleteTransaction = index => {
     setAllData(allData => {
-      const updatedIncomeData = allData.income.filter((_, i) => i !== index);
+      const updatedIncomeData = allData.filter((_, i) => i !== index);
       return updatedIncomeData;
     });
   };
-  // income data
-  const renderingIncomeData = allData.income.map((curr, index) => (
-    <View key={index} style={styles.innerContainerTwo}>
-      <View style={styles.incomeItem}>
-        <Text style={styles.textContent}>
-          Date and Time: {curr.date.toLocaleString()}
-        </Text>
-        <Text style={styles.textContent}>Description: {curr.description}</Text>
 
-        <Text style={styles.textContent}>Your Income: {curr.income}.Rs</Text>
+  const renderingIncomeData = allData.map((curr, index) =>
+    curr.type == 'Income' ? (
+      <View key={index} style={styles.innerContainerTwo}>
+        <View style={styles.incomeItem}>
+          <Text style={styles.textContent}>{curr.type}</Text>
+
+          <Text style={styles.textContent}>
+            Date and Time: {curr.createdAt.toLocaleString()}
+          </Text>
+          <Text style={styles.textContent}>
+            Description: {curr.description}
+          </Text>
+
+          <Text style={styles.textContent}>Your Income: {curr.data}.Rs</Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => deleteTransaction(index)}
+          acitiveOpacity={0.8}>
+          <DeleteIcon height={20} width={20} color={'red'} />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={() => deleteTransaction(index)}
-        acitiveOpacity={0.8}>
-        <DeleteIcon height={20} width={20} color={'red'} />
-      </TouchableOpacity>
-    </View>
-  ));
+    ) : (
+      <View key={index} style={styles.innerContainerTwo}>
+        <View style={styles.expenseItem}>
+          <Text style={styles.expenseContent}>{curr.type}</Text>
+
+          <Text style={styles.expenseContent}>
+            Date and Time: {curr.createdAt.toLocaleString()}
+          </Text>
+          <Text style={styles.expenseContent}>
+            Description: {curr.description}
+          </Text>
+
+          <Text style={styles.expenseContent}>
+            Your Expense: {curr.data}.Rs
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => deleteTransaction(index)}
+          acitiveOpacity={0.8}>
+          <DeleteIcon height={20} width={20} color={'red'} />
+        </TouchableOpacity>
+      </View>
+    ),
+  );
   // expense data
-  const renderingExpenseData = allData.expense.map((curr, index) => (
-    <View key={index} style={styles.innerContainerTwo}>
-      <View style={styles.expenseItem}>
-        <Text style={styles.expenseContent}>
-          Date and Time: {curr.date.toLocaleString()}
-        </Text>
-        <Text style={styles.expenseContent}>
-          Description: {curr.expDescription}
-        </Text>
+  // const renderingExpenseData = allData.expense.map((curr, index) => (
+  //   <View key={index} style={styles.innerContainerTwo}>
+  //     <View style={styles.expenseItem}>
+  //       <Text style={styles.expenseContent}>
+  //         Date and Time: {curr.date.toLocaleString()}
+  //       </Text>
+  //       <Text style={styles.expenseContent}>
+  //         Description: {curr.expDescription}
+  //       </Text>
 
-        <Text style={styles.expenseContent}>
-          Your Expense: {curr.expense}.Rs
-        </Text>
-      </View>
-    </View>
-  ));
+  //       <Text style={styles.expenseContent}>
+  //         Your Expense: {curr.expense}.Rs
+  //       </Text>
+  //     </View>
+  //   </View>
+  // ));
 
   return (
     <View style={styles.container}>
@@ -91,19 +108,19 @@ function TransactionScreen() {
         <View style={{flex: 1, alignItems: 'center', marginVertical: 40}}>
           {/* showing income and expense data */}
           {renderingIncomeData}
-          {renderingExpenseData}
+          {/* {renderingExpenseData} */}
         </View>
       </ScrollView>
       <Button
-        title={`Balance: ${balance()} RS`}
+        title={`Balance: ${totalBalance} RS`}
         onPress={() => this.RBSheet.open()}
         color="black"
       />
       <CustomBottomSheet
         title={'Income: '}
-        amountOne={calculateTotalIncome()}
+        amountOne={totalIncome}
         titleTwo={'Expense: '}
-        amountTwo={calculateTotalExpense()}
+        amountTwo={totalExpense}
         onClose={() => this.RBSheet.close()}
       />
     </View>
