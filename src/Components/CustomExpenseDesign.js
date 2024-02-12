@@ -1,15 +1,16 @@
 import React from 'react';
-import {useState, useContext} from 'react';
-import {MainContext} from '../Contexts/MainContext';
+import {useMainContext} from '../Contexts/MainContext';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {handleAddTransaction} from '../Utils';
+import CustomNotifications from './CustomNotifications';
 function CustomExpenseDesign({buttonColor, borderColor}) {
   const {
     addExpense,
@@ -21,7 +22,12 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
     addExpDescription,
     setAddExpDescription,
     setAllData,
-  } = useContext(MainContext);
+    expenseNotification,
+    setExpenseNotification,
+    // myExpense,
+    postingData,
+  
+  } = useMainContext();
   // date and time functions
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -47,19 +53,30 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
 
   const handleAddExpense = () => {
     if (addExpDescription && selectedDate && addExpense) {
-      handleAddTransaction(
-        setAllData,
-        addExpDescription,
-        'Expense',
-        parseFloat(addExpense),
-        selectedDate,
-      );
+      postingData({
+        data: setAllData,
+        description: addExpDescription,
+        amount: parseFloat(addExpense),
+        type: 'Expense',
+        createdAt: selectedDate,
+      });
+      setExpenseNotification(true);
     } else {
       Alert.alert('one or more fields left empty');
     }
   };
+
   return (
     <View style={styles.container}>
+      {expenseNotification && (
+        <CustomNotifications
+          message={'Expense Data Submitted Sucessfully'}
+          backgroundColor={'darkred'}
+          setNotification={setExpenseNotification}
+          notification={expenseNotification}
+          duration={1500}
+        />
+      )}
       <View style={styles.infoView}>
         <Text style={styles.amountHeading}>Description</Text>
         <TextInput
@@ -114,6 +131,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightgrey',
+  },
+  submittedContainer: {
+    flex: 1,
+    backgroundColor: 'black',
   },
   infoView: {
     marginTop: '5%',

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {View, StyleSheet} from 'react-native';
 import HeaderComponent from '../Components/HeaderComponent';
 import {
@@ -7,11 +8,8 @@ import {
 } from 'react-native-responsive-screen';
 import CustomExpenseDesign from '../Components/CustomExpenseDesign';
 import CustomIncomeDesign from '../Components/CustomIncomeDesign';
-function IncomeScreen({
-  isIncome,
-  handleIsIncomePress,
-  handleIsExpensePress,
-}) {
+function IncomeScreen({isIncome, handleIsIncomePress, handleIsExpensePress}) {
+  
   return (
     <View style={styles.container}>
       <HeaderComponent
@@ -21,17 +19,11 @@ function IncomeScreen({
       />
       {isIncome ? (
         <View style={[styles.headerContent]}>
-          <CustomIncomeDesign
-            buttonColor="green"
-            borderColor="green"
-          />
+          <CustomIncomeDesign buttonColor="green" borderColor="green" />
         </View>
       ) : (
         <View style={[styles.headerContent]}>
-          <CustomExpenseDesign
-            buttonColor="darkred"
-            borderColor="darkred"
-          />
+          <CustomExpenseDesign buttonColor="darkred" borderColor="darkred" />
         </View>
       )}
     </View>
@@ -41,6 +33,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightgrey',
+  },
+  submittedContainer: {
+    flex: 1,
+    backgroundColor: 'grey',
   },
   headerContent: {
     flex: 1,

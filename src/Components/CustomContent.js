@@ -1,40 +1,48 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {MainContext} from '../Contexts/MainContext';
+import {useMainContext} from '../Contexts/MainContext';
+import CustomSpinner from './CustomSpinner';
 
 function CustomContent() {
-  const {allData} = useContext(MainContext);
-
-  // calculating balance
-
-  const totalIncome = allData
-    .filter(currElem => currElem.type === 'Income')
-    .reduce((acc, currElem) => acc + currElem.data, 0);
-
-  const totalExpense = allData
-    .filter(currElem => currElem.type === 'Expense')
-    .reduce((acc, currElem) => acc + currElem.data, 0);
-
-  const totalBalance = totalIncome - totalExpense;
-
-  console.log('total income', totalIncome);
+  const {totalIncome, totalExpense, totalBalance} = useMainContext();
 
   return (
     <View style={styles.contentContainer}>
       <View>
         <Text style={styles.incomeText}>Income</Text>
         {/* added the state prop to show the updated income data */}
-        <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
+
+        {totalIncome === 0 ? (
+          <Text style={styles.incomeContent}>0 Rs</Text>
+        ) : totalIncome > 0 ? (
+          <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
+        ) : (
+          <CustomSpinner />
+        )}
       </View>
       <View>
         <Text style={styles.expenseText}>Expense</Text>
         {/* added the state prop to show the updated expense data */}
-        <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
+
+        {totalExpense === 0 ? (
+          <Text style={styles.expenseContent}>0 Rs</Text>
+        ) : totalIncome > 0 ? (
+          <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
+        ) : (
+          <CustomSpinner />
+        )}
       </View>
       <View>
         <Text style={styles.balanceText}>Balance</Text>
         {/* calculated balance on the top of the screen and shown on the balance content */}
-        <Text style={styles.balanceContent}>{totalBalance} RS</Text>
+
+        {totalBalance === 0 ? (
+          <Text style={styles.balanceContent}>0 Rs</Text>
+        ) : totalIncome > 0 ? (
+          <Text style={styles.balanceContent}>{totalBalances} Rs</Text>
+        ) : (
+          <CustomSpinner />
+        )}
       </View>
     </View>
   );

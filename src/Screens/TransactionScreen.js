@@ -1,5 +1,4 @@
-import {useContext} from 'react';
-import {MainContext} from '../Contexts/MainContext';
+import {useMainContext} from '../Contexts/MainContext';
 import {
   View,
   Text,
@@ -7,36 +6,37 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
+  // TextInput,
 } from 'react-native';
 import CustomBottomSheet from '../Components/CustomBottomSheet';
 import {DeleteIcon} from '../Assets/Icons';
 
 function TransactionScreen() {
-  const {allData, setAllData} = useContext(MainContext);
-
-  // calculating balance
-
-  const totalIncome = allData
-    .filter(currElem => currElem.type === 'Income')
-    .reduce((acc, currElem) => acc + currElem.data, 0);
-
-  const totalExpense = allData
-    .filter(currElem => currElem.type === 'Expense')
-    .reduce((acc, currElem) => acc + currElem.data, 0);
-
-  const totalBalance = totalIncome - totalExpense;
+  const {
+    allData,
+    deleteTransactions,
+    clearAllTransactions,
+    totalIncome,
+    totalExpense,
+    totalBalance,
+  } = useMainContext();
 
   //deleting all data
   const clearAll = () => {
-    setAllData([]);
+    // setAllData([]);
+    clearAllTransactions();
   };
 
   const deleteTransaction = index => {
-    setAllData(allData => {
-      const updatedIncomeData = allData.filter((_, i) => i !== index);
-      return updatedIncomeData;
-    });
+    deleteTransactions(index);
   };
+
+  // const handleSearch = () => {
+  //   const searchData = allData.filter(item =>
+  //     item.description.toLowerCase().includes(query.toLowerCase()),
+  //   );
+  //   setQuery(searchData);
+  // };
 
   const renderingIncomeData = allData.map((curr, index) =>
     curr.type == 'Income' ? (
@@ -51,10 +51,10 @@ function TransactionScreen() {
             Description: {curr.description}
           </Text>
 
-          <Text style={styles.textContent}>Your Income: {curr.data}.Rs</Text>
+          <Text style={styles.textContent}>Your Income: {curr.amount}.Rs</Text>
         </View>
         <TouchableOpacity
-          onPress={() => deleteTransaction(index)}
+          onPress={() => deleteTransaction(curr.id)}
           acitiveOpacity={0.8}>
           <DeleteIcon height={20} width={20} color={'red'} />
         </TouchableOpacity>
@@ -72,38 +72,34 @@ function TransactionScreen() {
           </Text>
 
           <Text style={styles.expenseContent}>
-            Your Expense: {curr.data}.Rs
+            Your Expense: {curr.amount}.Rs
           </Text>
         </View>
         <TouchableOpacity
-          onPress={() => deleteTransaction(index)}
+          onPress={() => deleteTransaction(curr.id)}
           acitiveOpacity={0.8}>
           <DeleteIcon height={20} width={20} color={'red'} />
         </TouchableOpacity>
       </View>
     ),
   );
-  // expense data
-  // const renderingExpenseData = allData.expense.map((curr, index) => (
-  //   <View key={index} style={styles.innerContainerTwo}>
-  //     <View style={styles.expenseItem}>
-  //       <Text style={styles.expenseContent}>
-  //         Date and Time: {curr.date.toLocaleString()}
-  //       </Text>
-  //       <Text style={styles.expenseContent}>
-  //         Description: {curr.expDescription}
-  //       </Text>
-
-  //       <Text style={styles.expenseContent}>
-  //         Your Expense: {curr.expense}.Rs
-  //       </Text>
-  //     </View>
-  //   </View>
-  // ));
 
   return (
     <View style={styles.container}>
       <Button title="Clear All" onPress={clearAll} color="red" />
+      {/* <TextInput
+        placeholder="Search"
+        // value={query}
+        // onChangeText={handleSearch}
+        style={{
+          borderWidth: 1,
+          borderRadius: 20,
+          marginHorizontal: 10,
+          marginTop: 10,
+          backgroundColor: 'white',
+        }}
+      /> */}
+
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={{flex: 1, alignItems: 'center', marginVertical: 40}}>
           {/* showing income and expense data */}

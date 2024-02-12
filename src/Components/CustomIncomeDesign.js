@@ -1,6 +1,4 @@
-import React from 'react';
-import {useContext} from 'react';
-import {MainContext} from '../Contexts/MainContext';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,7 +8,8 @@ import {
   Alert,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {handleAddTransaction} from '../Utils';
+import CustomNotifications from './CustomNotifications';
+import {useMainContext} from '../Contexts/MainContext';
 
 function CustomIncomeDesign({buttonColor, borderColor}) {
   const {
@@ -22,10 +21,13 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
     selectedDate,
     addDescription,
     setAddDescription,
-    allData,
     setAllData,
-  } = useContext(MainContext);
-
+    allData,
+    incomeNotification,
+    setIncomeNotification,
+    postingData,
+  } = useMainContext();
+  console.log(`my data ${allData}`);
   // date and time states
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -53,13 +55,15 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
 
   const handleAddIncome = () => {
     if (addDescription && selectedDate && addIncome) {
-      handleAddTransaction(
-        setAllData,
-        addDescription,
-        'Income',
-        parseFloat(addIncome),
-        selectedDate,
-      );
+      postingData({
+        data: setAllData,
+        description: addDescription,
+        amount: parseFloat(addIncome),
+        type: 'Income',
+        createdAt: selectedDate,
+      });
+
+      setIncomeNotification(true);
     } else {
       Alert.alert('one or more fields left empty');
     }
@@ -67,6 +71,15 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
 
   return (
     <View style={styles.container}>
+      {incomeNotification && (
+        <CustomNotifications
+          message={'Income Data Submitted Sucessfully'}
+          setNotification={setIncomeNotification}
+          notification={incomeNotification}
+          duration={1500}
+          
+        />
+      )}
       <View style={styles.infoView}>
         <Text style={styles.amountHeading}>Description</Text>
         <TextInput
