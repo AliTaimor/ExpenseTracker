@@ -4,7 +4,7 @@ import {useMainContext} from '../Contexts/MainContext';
 import CustomSpinner from './CustomSpinner';
 
 function CustomContent() {
-  const {totalIncome, totalExpense, totalBalance} = useMainContext();
+  const {totalIncome, totalExpense, totalBalance, isLoading} = useMainContext();
 
   return (
     <View style={styles.contentContainer}>
@@ -12,36 +12,28 @@ function CustomContent() {
         <Text style={styles.incomeText}>Income</Text>
         {/* added the state prop to show the updated income data */}
 
-        {totalIncome === 0 ? (
-          <Text style={styles.incomeContent}>0 Rs</Text>
-        ) : totalIncome > 0 ? (
-          <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
-        ) : (
+        {isLoading ? (
           <CustomSpinner />
+        ) : (
+          <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
         )}
       </View>
       <View>
         <Text style={styles.expenseText}>Expense</Text>
-        {/* added the state prop to show the updated expense data */}
 
-        {totalExpense === 0 ? (
-          <Text style={styles.expenseContent}>0 Rs</Text>
-        ) : totalIncome > 0 ? (
-          <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
-        ) : (
+        {isLoading ? (
           <CustomSpinner />
+        ) : (
+          <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
         )}
       </View>
       <View>
         <Text style={styles.balanceText}>Balance</Text>
         {/* calculated balance on the top of the screen and shown on the balance content */}
-
-        {totalBalance === 0 ? (
-          <Text style={styles.balanceContent}>0 Rs</Text>
-        ) : totalIncome > 0 ? (
-          <Text style={styles.balanceContent}>{totalBalances} Rs</Text>
-        ) : (
+        {isLoading ? (
           <CustomSpinner />
+        ) : (
+          <Text style={styles.balanceContent}>{totalBalance} Rs</Text>
         )}
       </View>
     </View>

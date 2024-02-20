@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useMainContext} from '../Contexts/MainContext';
 import {
   View,
@@ -9,25 +9,25 @@ import {
   Alert,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {handleAddTransaction} from '../Utils';
 import CustomNotifications from './CustomNotifications';
-function CustomExpenseDesign({buttonColor, borderColor}) {
+function CustomExpenseDesign({buttonColor, borderColor, index}) {
   const {
-    addExpense,
-    setAddExpense,
-    setSelectedDate,
-    selectedDate,
+    dispatch,
     isDatePickerVisible,
     setDatePickerVisibility,
-    addExpDescription,
-    setAddExpDescription,
-    setAllData,
-    expenseNotification,
-    setExpenseNotification,
-    // myExpense,
+    formattedDate,
     postingData,
-  
+    isNotification,
   } = useMainContext();
+  const [inputValueEvent, setInputValueEvent] = useState(
+    index ? index.amount : '',
+  );
+  const [eventDescription, setEventDescription] = useState(
+    index ? index.description : '',
+  );
+  const [dateTimeEvent, setDateTimeEvent] = useState(
+    index ? index.dateTimeEvent : formattedDate(new Date()),
+  );
   // date and time functions
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -38,42 +38,55 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
   };
 
   const handleConfirm = date => {
-    setSelectedDate(date);
+    const newDate = formattedDate(date);
+    setDateTimeEvent(newDate);
     hideDatePicker();
-  };
-  const formattedDate = selectedDate.toLocaleString();
-  // function to add expense amount
-  const handleChange = newAmount => {
-    setAddExpense(parseFloat(newAmount));
-  };
-  //adding the state for Description
-  const handleDescription = newDescription => {
-    setAddExpDescription(newDescription);
   };
 
   const handleAddExpense = () => {
-    if (addExpDescription && selectedDate && addExpense) {
-      postingData({
-        data: setAllData,
-        description: addExpDescription,
-        amount: parseFloat(addExpense),
-        type: 'Expense',
-        createdAt: selectedDate,
+    if (eventDescription && dateTimeEvent && inputValueEvent) {
+      dispatch({
+        type: 'addincomeData',
+        payload: {
+          description: eventDescription,
+          amount: parseFloat(inputValueEvent),
+          type: 'Expense',
+          createdAt: dateTimeEvent,
+        },
       });
-      setExpenseNotification(true);
+      dispatch({
+        type: 'notification',
+        payload: true,
+      });
+      postingData({
+        description: eventDescription,
+        amount: parseFloat(inputValueEvent),
+        type: 'Expense',
+        dateTimeEvent,
+      });
     } else {
       Alert.alert('one or more fields left empty');
     }
   };
 
+  const handleEdit = () => {
+    const newIndex = {
+      description: eventDescription,
+      amount: parseFloat(inputValueEvent),
+      type: 'Expense',
+      dateTimeEvent,
+      id: index.id,
+    };
+
+    editData(newIndex);
+  };
+
   return (
     <View style={styles.container}>
-      {expenseNotification && (
+      {isNotification && (
         <CustomNotifications
           message={'Expense Data Submitted Sucessfully'}
           backgroundColor={'darkred'}
-          setNotification={setExpenseNotification}
-          notification={expenseNotification}
           duration={1500}
         />
       )}
@@ -83,7 +96,7 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
           placeholder="Note"
           style={styles.amountBoxTwo}
           onChangeText={text => {
-            handleDescription(text);
+            setEventDescription(text);
           }}
         />
       </View>
@@ -94,7 +107,7 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
           {/* date and time functionality */}
 
           <View>
-            <Text style={styles.dateTimeStyle}>{formattedDate}</Text>
+            <Text style={styles.dateTimeStyle}>{dateTimeEvent}</Text>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="datetime"
@@ -113,16 +126,26 @@ function CustomExpenseDesign({buttonColor, borderColor}) {
           keyboardType="phone-pad"
           style={[styles.amountBox, {borderColor: borderColor}]}
           //  detecting changes for setting expense
-          onChangeText={text => handleChange(text)}
+          onChangeText={text => setInputValueEvent(text)}
         />
       </View>
       <View style={styles.buttonView}>
-        <TouchableOpacity
-          style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
-          activeOpacity={0.8}
-          onPress={handleAddExpense}>
-          <Text style={styles.buttonText}>Add Expense</Text>
-        </TouchableOpacity>
+        {index ? (
+          <TouchableOpacity
+            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            activeOpacity={0.8}
+            onPress={handleEdit}>
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            activeOpacity={0.8}
+            onPress={handleAddExpense}>
+            <Text style={styles.buttonText}>Add Expense</Text>
+          </TouchableOpacity>
+        )}
+    
       </View>
     </View>
   );

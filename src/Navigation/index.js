@@ -5,15 +5,34 @@ import {
   IncomeContainer,
   HomeContainer,
   TransactionContainer,
+  RegisterContainer,
 } from '../Container';
 import {MainProvider} from '../Contexts/MainContext';
+import WelcomeContainer from '../Container/WelcomeAndLoginContainer/WelcomeContainer';
+import LoginContainer from '../Container/WelcomeAndLoginContainer/LoginContainer';
 
 const Stack = createNativeStackNavigator();
 function Navigation() {
   return (
     <MainProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRoute="Home">
+        <Stack.Navigator initialRoute="Welcome">
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeContainer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen 
+            name="Login"
+            component={LoginContainer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterContainer}
+            options={{headerShown: false}}
+          />
+
           <Stack.Screen
             name="Home"
             component={HomeContainer}

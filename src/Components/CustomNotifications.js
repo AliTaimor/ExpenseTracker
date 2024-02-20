@@ -1,20 +1,20 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
+import {useMainContext} from '../Contexts/MainContext';
 
 export default function CustomNotifications({
-  message = 'teri luli kaat du ga',
+  message = 'Add Your Message Here',
   height = 50,
   width = '75%',
-  backgroundColor = 'green',
+  backgroundColor = 'lightblue',
   borderRadius = 30,
   position = 'absolute',
   top = -170,
   left = 55,
   color = 'white',
-  setNotification = true,
-  notification = false,
   duration = 2000,
 }) {
+  const {dispatch, isNotification} = useMainContext();
   const containerStyles = {
     height: height,
     width: width,
@@ -29,12 +29,12 @@ export default function CustomNotifications({
   };
 
   useEffect(() => {
-    if (!notification) return;
+    if (!isNotification) return;
 
     setTimeout(() => {
-      setNotification(false);
+      dispatch({type: 'notification', payload: false});
     }, duration);
-  }, [notification]);
+  }, [isNotification]);
   return (
     <View style={[styles.container, containerStyles]}>
       <Text style={messageStyle}>{message}</Text>

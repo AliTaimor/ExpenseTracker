@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,23 +11,26 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomNotifications from './CustomNotifications';
 import {useMainContext} from '../Contexts/MainContext';
 
-function CustomIncomeDesign({buttonColor, borderColor}) {
+function CustomIncomeDesign({buttonColor, borderColor, index}) {
   const {
-    addIncome,
-    setAddIncome,
     isDatePickerVisible,
     setDatePickerVisibility,
-    setSelectedDate,
-    selectedDate,
-    addDescription,
-    setAddDescription,
-    setAllData,
-    allData,
-    incomeNotification,
-    setIncomeNotification,
     postingData,
+    dispatch,
+    formattedDate,
+    isNotification,
+    editData,
   } = useMainContext();
-  console.log(`my data ${allData}`);
+  const [inputValueEvent, setInputValueEvent] = useState(
+    index ? index.amount : '',
+  );
+  const [eventDescription, setEventDescription] = useState(
+    index ? index.description : '',
+  );
+  const [dateTimeEvent, setDateTimeEvent] = useState(
+    index ? index.dateTimeEvent : formattedDate(new Date()),
+  );
+
   // date and time states
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -38,58 +41,69 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
   };
 
   const handleConfirm = date => {
-    setSelectedDate(date);
+    const newDate = formattedDate(date);
+    setDateTimeEvent(newDate);
     hideDatePicker();
-  };
-  const formattedDate = selectedDate.toLocaleString();
-
-  //adding the state for changing income
-
-  const handleChange = newIncome => {
-    setAddIncome(parseFloat(newIncome));
-  };
-  //adding the state for Description
-  const handleDescription = newDescription => {
-    setAddDescription(newDescription);
   };
 
   const handleAddIncome = () => {
-    if (addDescription && selectedDate && addIncome) {
-      postingData({
-        data: setAllData,
-        description: addDescription,
-        amount: parseFloat(addIncome),
-        type: 'Income',
-        createdAt: selectedDate,
+    if (eventDescription && dateTimeEvent && inputValueEvent) {
+      dispatch({
+        type: 'addincomeData',
+        payload: {
+          description: eventDescription,
+          amount: parseFloat(inputValueEvent),
+          type: 'Income',
+          createdAt: dateTimeEvent,
+        },
       });
-
-      setIncomeNotification(true);
+      dispatch({
+        type: 'notification',
+        payload: true,
+      });
+      postingData({
+        description: eventDescription,
+        amount: parseFloat(inputValueEvent),
+        type: 'Income',
+        dateTimeEvent,
+      });
     } else {
       Alert.alert('one or more fields left empty');
     }
   };
 
+  const handleEdit = () => {
+    const newIndex = {
+      description: eventDescription,
+      amount: parseFloat(inputValueEvent),
+      type: 'Income',
+      dateTimeEvent,
+      id: index.id,
+    };
+
+    editData(newIndex);
+  };
+
   return (
     <View style={styles.container}>
-      {incomeNotification && (
+      {isNotification && (
         <CustomNotifications
           message={'Income Data Submitted Sucessfully'}
-          setNotification={setIncomeNotification}
-          notification={incomeNotification}
+          backgroundColor={'green'}
           duration={1500}
-          
         />
       )}
       <View style={styles.infoView}>
         <Text style={styles.amountHeading}>Description</Text>
         <TextInput
           placeholder="Note"
+          value={eventDescription}
           style={styles.amountBoxTwo}
           onChangeText={text => {
-            handleDescription(text);
+            setEventDescription(text);
           }}
         />
-        <View></View>
+      
       </View>
       <TouchableOpacity onPress={showDatePicker} activeOpacity={0.8}>
         <View style={styles.infoView}>
@@ -99,7 +113,7 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
 
           <View>
             <Text style={styles.dateTimeStyle}>
-              <Text>{formattedDate}</Text>
+              <Text>{dateTimeEvent}</Text>
             </Text>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
@@ -116,20 +130,31 @@ function CustomIncomeDesign({buttonColor, borderColor}) {
         <Text style={styles.amountHeading}>Amount</Text>
         <TextInput
           placeholder="Amount"
+          value={String(inputValueEvent)}
           keyboardType="phone-pad"
           style={[styles.amountBox, {borderColor: borderColor}]}
           // detecting the changed state
-          onChangeText={text => handleChange(text)}
+          onChangeText={text => setInputValueEvent(text)}
         />
       </View>
       <View style={styles.buttonView}>
-        <TouchableOpacity
-          style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
-          activeOpacity={0.8}
-          // setting the data in an empty array state
-          onPress={handleAddIncome}>
-          <Text style={styles.buttonText}>Add Income</Text>
-        </TouchableOpacity>
+        {index ? (
+          <TouchableOpacity
+            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            activeOpacity={0.8}
+            // setting the data in an empty array state
+            onPress={handleEdit}>
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            activeOpacity={0.8}
+            // setting the data in an empty array state
+            onPress={handleAddIncome}>
+            <Text style={styles.buttonText}>Add Income</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

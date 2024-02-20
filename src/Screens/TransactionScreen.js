@@ -1,4 +1,3 @@
-import {useMainContext} from '../Contexts/MainContext';
 import {
   View,
   Text,
@@ -6,12 +5,12 @@ import {
   Button,
   TouchableOpacity,
   ScrollView,
-  // TextInput,
 } from 'react-native';
 import CustomBottomSheet from '../Components/CustomBottomSheet';
 import {DeleteIcon} from '../Assets/Icons';
+import {useMainContext} from '../Contexts/MainContext';
 
-function TransactionScreen() {
+function TransactionScreen({navigation}) {
   const {
     allData,
     deleteTransactions,
@@ -23,7 +22,6 @@ function TransactionScreen() {
 
   //deleting all data
   const clearAll = () => {
-    // setAllData([]);
     clearAllTransactions();
   };
 
@@ -31,75 +29,73 @@ function TransactionScreen() {
     deleteTransactions(index);
   };
 
-  // const handleSearch = () => {
-  //   const searchData = allData.filter(item =>
-  //     item.description.toLowerCase().includes(query.toLowerCase()),
-  //   );
-  //   setQuery(searchData);
-  // };
+  const handleEdit = index => {
+    navigation.navigate('income', {index: index});
+  };
 
-  const renderingIncomeData = allData.map((curr, index) =>
+  const renderingIncomeData = allData.map(curr =>
     curr.type == 'Income' ? (
-      <View key={index} style={styles.innerContainerTwo}>
-        <View style={styles.incomeItem}>
-          <Text style={styles.textContent}>{curr.type}</Text>
+      <TouchableOpacity
+        onPress={() => handleEdit(curr)}
+        style={styles.innerContainerTwo}>
+        <View key={curr.id} style={styles.textDeleteContainer}>
+          <View style={styles.incomeItem}>
+            <Text style={styles.textContent}>{curr.type}</Text>
 
-          <Text style={styles.textContent}>
-            Date and Time: {curr.createdAt.toLocaleString()}
-          </Text>
-          <Text style={styles.textContent}>
-            Description: {curr.description}
-          </Text>
+            <Text style={styles.textContent}>
+              Date and Time: {curr.dateTimeEvent}
+            </Text>
+            <Text style={styles.textContent}>
+              Description: {curr.description}
+            </Text>
 
-          <Text style={styles.textContent}>Your Income: {curr.amount}.Rs</Text>
+            <Text style={styles.textContent}>
+              Your Income: {curr.amount}.Rs
+            </Text>
+          </View>
+          <View style={styles.deleteIconView}>
+            <TouchableOpacity
+              onPress={() => deleteTransaction(curr.id)}
+              acitiveOpacity={0.8}>
+              <DeleteIcon height={20} width={20} color={'red'} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity
-          onPress={() => deleteTransaction(curr.id)}
-          acitiveOpacity={0.8}>
-          <DeleteIcon height={20} width={20} color={'red'} />
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     ) : (
-      <View key={index} style={styles.innerContainerTwo}>
-        <View style={styles.expenseItem}>
-          <Text style={styles.expenseContent}>{curr.type}</Text>
+      <TouchableOpacity
+        onPress={() => handleEdit(curr)}
+        style={styles.innerContainerTwo}>
+        <View key={curr.id} style={styles.textDeleteContainer}>
+          <View style={styles.expenseItem}>
+            <Text style={styles.expenseContent}>{curr.type}</Text>
 
-          <Text style={styles.expenseContent}>
-            Date and Time: {curr.createdAt.toLocaleString()}
-          </Text>
-          <Text style={styles.expenseContent}>
-            Description: {curr.description}
-          </Text>
+            <Text style={styles.expenseContent}>
+              Date and Time: {curr.dateTimeEvent}
+            </Text>
+            <Text style={styles.expenseContent}>
+              Description: {curr.description}
+            </Text>
 
-          <Text style={styles.expenseContent}>
-            Your Expense: {curr.amount}.Rs
-          </Text>
+            <Text style={styles.expenseContent}>
+              Your Expense: {curr.amount}.Rs
+            </Text>
+          </View>
+          <View style={styles.deleteIconView}>
+            <TouchableOpacity
+              onPress={() => deleteTransaction(curr.id)}
+              acitiveOpacity={0.8}>
+              <DeleteIcon height={20} width={20} color={'red'} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity
-          onPress={() => deleteTransaction(curr.id)}
-          acitiveOpacity={0.8}>
-          <DeleteIcon height={20} width={20} color={'red'} />
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     ),
   );
 
   return (
     <View style={styles.container}>
       <Button title="Clear All" onPress={clearAll} color="red" />
-      {/* <TextInput
-        placeholder="Search"
-        // value={query}
-        // onChangeText={handleSearch}
-        style={{
-          borderWidth: 1,
-          borderRadius: 20,
-          marginHorizontal: 10,
-          marginTop: 10,
-          backgroundColor: 'white',
-        }}
-      /> */}
-
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={{flex: 1, alignItems: 'center', marginVertical: 40}}>
           {/* showing income and expense data */}
@@ -126,6 +122,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightgrey',
+  },
+  textDeleteContainer: {
+    flexDirection: 'row',
+    gap: 30,
+  },
+  deleteIconView: {
+    marginTop: 15,
   },
   innerContainerTwo: {
     marginVertical: 10,

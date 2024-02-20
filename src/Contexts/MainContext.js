@@ -1,26 +1,92 @@
-import {createContext, useContext, useState, useEffect} from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useReducer,
+} from 'react';
 const MainContext = createContext();
 
 const apiUrl = 'http://192.168.10.26:3000';
 
+const formattedDate = createdAt => {
+  return createdAt.toLocaleString();
+};
+
+const initialState = {
+  income: 0,
+  expense: 0,
+  description: '',
+  createdAt: new Date().toISOString(),
+  isLoading: false,
+  allData: [],
+  isNotification: false,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'addincomeData':
+      return {
+        ...state,
+        income: action.payload.amount,
+        description: action.payload.description,
+        createdAt: action.payload.createdAt,
+      };
+
+    case 'loading':
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case 'datarecieved':
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case 'allData':
+      return {
+        ...state,
+        allData: action.payload,
+      };
+    case 'postingData':
+      return {
+        ...state,
+        allData: [...state.allData, action.payload],
+      };
+    case 'clearAll':
+      return {
+        ...state,
+        allData: [],
+      };
+    case 'notification':
+      return {
+        ...state,
+        isNotification: action.payload,
+      };
+    case 'edit':
+      return {...state, allData: action.payload};
+
+    default:
+      throw new Error('Invalid action type ');
+  }
+}
+
 function MainProvider({children}) {
-  // setting and exporting the income data through states and passing through the navigation
-  const [addIncome, setAddIncome] = useState(0);
-  // setting and exporting the expense data through states and passing through the navigation
-  const [addExpense, setAddExpense] = useState(0);
-  //setting state for despription
-  const [addDescription, setAddDescription] = useState('');
-  //setting state for expense description
-  const [addExpDescription, setAddExpDescription] = useState('');
-  // date and time functionality
+  const [
+    {
+      income,
+      expense,
+      balance,
+      description,
+      createdAt,
+      isLoading,
+      allData,
+      isNotification,
+    },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  // all data for income and expense
-  const [allData, setAllData] = useState([]);
-  // for searching the transactions
-  // const [query, setQuery] = useState();
-  const [expenseNotification, setExpenseNotification] = useState(false);
-  const [incomeNotification, setIncomeNotification] = useState(false);
 
   // derived states
   const totalIncome = allData
@@ -35,14 +101,18 @@ function MainProvider({children}) {
 
   useEffect(() => {
     async function fetchingIncome() {
+      dispatch({type: 'loading'});
       try {
         const response = await fetch(`${apiUrl}/data`);
         const data = await response.json();
-        setAllData(data);
+        dispatch({type: 'allData', payload: data});
       } catch (err) {
         console.error(err.message);
+      } finally {
+        dispatch({type: 'datarecieved'});
       }
     }
+
     fetchingIncome();
   }, []);
 
@@ -54,53 +124,77 @@ function MainProvider({children}) {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      setAllData(currData => [...currData, data]);
+      dispatch({type: 'postingData', payload: data});
     } catch (err) {
       console.error(err.message);
     }
   }
+  async function editData(editedFormData) {
+    if (!editedFormData) return;
+    try {
+      const response = await fetch(`${apiUrl}/data/${editedFormData.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(editedFormData),
+        headers: { 'Content-Type': 'application/json' },
+      });
+        if (response.ok) {
+        const updatedData = allData.map(currElem => {
+          if (currElem.id === editedFormData.id) {
+            return {
+              ...currElem,
+              amount: editedFormData.amount,
+              createdAt: editedFormData.dateTimeEvent,
+              description: editedFormData.description,
+            };
+          }
+          return currElem;
+        });
+          dispatch({ type: 'edit', payload: updatedData });
+      } else {
+        console.error('Failed to update data on the server');
+      }
+    } catch (error) {
+      console.error('Error while updating data on the server:', error.message);
+    }
+  }
+  
 
   async function deleteTransactions(id) {
     await fetch(`${apiUrl}/data/${id}`, {
       method: 'DELETE',
     });
-    setAllData(currData => currData.filter(currElem => id !== currElem.id));
+    const updatedData = allData.filter(currElem => id !== currElem.id);
+    dispatch({type: 'allData', payload: updatedData});
   }
   async function clearAllTransactions() {
     await fetch(`${apiUrl}/myExpense/myIncome`, {
       method: 'DELETE',
     });
-    setAllData([]);
+    dispatch({type: 'clearAll'});
   }
 
   return (
     <MainContext.Provider
       value={{
-        addIncome,
-        setAddIncome,
-        addExpense,
-        setAddExpense,
-        addDescription,
-        setAddDescription,
-        selectedDate,
-        setSelectedDate,
+        income,
+        expense,
+        balance,
+        description,
+        createdAt,
+        dispatch,
         isDatePickerVisible,
         setDatePickerVisibility,
-        addExpDescription,
-        setAddExpDescription,
+        formattedDate,
         allData,
-        setAllData,
-        expenseNotification,
-        setExpenseNotification,
-        incomeNotification,
-        setIncomeNotification,
-        postingData,
+        isLoading,
         totalIncome,
+        postingData,
         totalExpense,
         totalBalance,
         deleteTransactions,
         clearAllTransactions,
-        
+        isNotification,
+        editData,
       }}>
       {children}
     </MainContext.Provider>
