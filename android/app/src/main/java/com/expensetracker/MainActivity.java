@@ -1,5 +1,8 @@
 package com.expensetracker;
-
+// import statements for splash screen
+import android.os.Bundle;
+import org.devio.rn.splashscreen.SplashScreen;
+// 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -15,6 +18,15 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "ExpenseTracker";
   }
+
+
+  // splash screen method 
+  @Override
+protected void onCreate(Bundle savedInstanceState) {
+  SplashScreen.show(this, true);
+  super.onCreate(savedInstanceState);
+}
+
 
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link

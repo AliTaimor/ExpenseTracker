@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {HomeScreen} from '../Screens';
-import {MainContext} from '../Contexts/MainContext';
 
 function HomeContainer({navigation}) {
   const handleNavigate = () => {

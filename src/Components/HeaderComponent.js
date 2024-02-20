@@ -6,20 +6,28 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const HeaderComponent = ({handleIsIncomePress, handleIsExpensePress}) => {
+const HeaderComponent = ({
+  handleIsIncomePress,
+  handleIsExpensePress,
+  index,
+}) => {
   const [isActiveIncome, setIsActiveIncome] = useState(true);
   const [isActiveExpense, setIsActiveExpense] = useState(false);
-
+  console.log(index);
   const handleIncomePress = () => {
-    setIsActiveIncome(true);
-    setIsActiveExpense(false);
-    handleIsIncomePress();
+    if (index.type === 'income') {
+      setIsActiveIncome(true);
+      setIsActiveExpense(false);
+      handleIsIncomePress();
+    }
   };
 
   const handleExpensePress = () => {
-    setIsActiveIncome(false);
-    setIsActiveExpense(true);
-    handleIsExpensePress();
+    if (index.type === 'expense') {
+      setIsActiveIncome(false);
+      setIsActiveExpense(true);
+      handleIsExpensePress();
+    }
   };
   return (
     <View style={styles.headingView}>
