@@ -50,17 +50,17 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   incomeContent: {
-    width: 60,
+    width: 70,
     color: '#043927',
     fontWeight: 'bold',
   },
   expenseContent: {
-    width: 60,
+    width: 70,
     color: '#58111A',
     fontWeight: 'bold',
   },
   balanceContent: {
-    width: 60,
+    width: 70,
     color: '#0090C4',
     fontWeight: 'bold',
   },

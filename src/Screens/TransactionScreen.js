@@ -30,7 +30,13 @@ function TransactionScreen({navigation}) {
   };
 
   const handleEdit = index => {
-    navigation.navigate('income', {index: index});
+    if (!index) return;
+
+    if (index.type === 'Income') {
+      navigation.navigate('IncomeFormScreen', {index: index});
+    } else {
+      navigation.navigate('ExpenseFormScreen', {index: index});
+    }
   };
 
   const renderingIncomeData = allData.map(curr =>

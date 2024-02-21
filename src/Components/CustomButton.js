@@ -1,10 +1,7 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, ImageBackground} from 'react-native';
 import {CustomButtonStyling} from '../Assets/Styles';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+
 const CustomButton = ({
   buttonContainer,
   textStyle,
@@ -40,32 +37,33 @@ const CustomButton = ({
         source={backgroundImageSource}
         style={{width: '100%', height: '100%'}}
         borderRadius={borderRadius}>
-
         <View
           style={[
-            CustomButtonStyling.overlay, 
+            CustomButtonStyling.overlay,
             {
-              backgroundColor: overlayColor, 
+              backgroundColor: overlayColor,
               flex: 1,
               width: '100%',
               height: '100%',
               borderRadius: borderRadius,
             },
           ]}>
-
-        <View style={CustomButtonStyling.iconContainer}>
-          <View style={CustomButtonStyling.incomeIcon}>
-            <View>{addIcon}</View>
+          <View style={CustomButtonStyling.iconContainer}>
+            <View style={CustomButtonStyling.incomeIcon}>
+              <View>{addIcon}</View>
+            </View>
+            <View
+              style={[
+                CustomButtonStyling.iconSeparator,
+                {width: separatorWidth},
+              ]}
+            />
+            <View>
+              <View>{addIconTwo}</View>
+            </View>
           </View>
-          <View
-            style={[CustomButtonStyling.iconSeparator, {width: separatorWidth}]}
-          />
-          <View>
-            <View>{addIconTwo}</View>
-          </View>
-        </View>
 
-        <Text style={[textStyle, labelStyle]}>{buttonLabel}</Text>
+          <Text style={[textStyle, labelStyle]}>{buttonLabel}</Text>
         </View>
       </ImageBackground>
     </TouchableOpacity>

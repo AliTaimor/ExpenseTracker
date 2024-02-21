@@ -1,25 +1,13 @@
 import React, {useEffect} from 'react';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
 import Navigation from './src/Navigation';
 
 const App = () => {
-  useEffect(()=>{ 
+  useEffect(() => {
     SplashScreen.hide();
+  }, []);
 
-  },[]);
- 
-  return <Navigation/> ;
-
-
+  return <Navigation />;
 };
 
-
 export default App;
-
-
-
-
-
-
-
-

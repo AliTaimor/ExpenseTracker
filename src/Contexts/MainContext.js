@@ -7,7 +7,7 @@ import {
 } from 'react';
 const MainContext = createContext();
 
-const apiUrl = 'http://192.168.10.26:3000';
+const apiUrl = 'http://192.168.10.5:3000';
 
 const formattedDate = createdAt => {
   return createdAt.toLocaleString();

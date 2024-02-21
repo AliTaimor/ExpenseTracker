@@ -10,19 +10,21 @@ import {
 import {MainProvider} from '../Contexts/MainContext';
 import WelcomeContainer from '../Container/WelcomeAndLoginContainer/WelcomeContainer';
 import LoginContainer from '../Container/WelcomeAndLoginContainer/LoginContainer';
+import IncomeFormScreen from '../Screens/FormScreens/IncomeFormScreen';
+import ExpenseFormScreen from '../Screens/FormScreens/ExpenseFormScreen';
 
 const Stack = createNativeStackNavigator();
 function Navigation() {
   return (
     <MainProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRoute="Welcome">
-          <Stack.Screen
+        <Stack.Navigator initialRoute="Home">
+          {/* <Stack.Screen
             name="Welcome"
             component={WelcomeContainer}
             options={{headerShown: false}}
           />
-          <Stack.Screen 
+          <Stack.Screen
             name="Login"
             component={LoginContainer}
             options={{headerShown: false}}
@@ -31,7 +33,7 @@ function Navigation() {
             name="Register"
             component={RegisterContainer}
             options={{headerShown: false}}
-          />
+          /> */}
 
           <Stack.Screen
             name="Home"
@@ -46,6 +48,16 @@ function Navigation() {
           <Stack.Screen
             name="transactions"
             component={TransactionContainer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="IncomeFormScreen"
+            component={IncomeFormScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ExpenseFormScreen"
+            component={ExpenseFormScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

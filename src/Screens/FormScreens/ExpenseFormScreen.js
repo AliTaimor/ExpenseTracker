@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useMainContext} from '../../Contexts/MainContext';
 import {
   View,
   Text,
@@ -8,19 +9,23 @@ import {
   Alert,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import CustomNotifications from './CustomNotifications';
-import {useMainContext} from '../Contexts/MainContext';
+import CustomNotifications from '../../Components/CustomNotifications';
+import {useRoute} from '@react-navigation/native';
 
-function CustomIncomeDesign({buttonColor, borderColor, index}) {
+function ExpenseFormScreen() {
   const {
+    dispatch,
     isDatePickerVisible,
     setDatePickerVisibility,
-    postingData,
-    dispatch,
     formattedDate,
+    postingData,
     isNotification,
-    editData,
   } = useMainContext();
+
+  const route = useRoute();
+  const {index} = route.params || {};
+  console.log('Expense Form screen', index);
+
   const [inputValueEvent, setInputValueEvent] = useState(
     index ? index.amount : '',
   );
@@ -30,8 +35,7 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
   const [dateTimeEvent, setDateTimeEvent] = useState(
     index ? index.dateTimeEvent : formattedDate(new Date()),
   );
-
-  // date and time states
+  // date and time functions
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -46,14 +50,14 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
     hideDatePicker();
   };
 
-  const handleAddIncome = () => {
+  const handleAddExpense = () => {
     if (eventDescription && dateTimeEvent && inputValueEvent) {
       dispatch({
         type: 'addincomeData',
         payload: {
           description: eventDescription,
           amount: parseFloat(inputValueEvent),
-          type: 'Income',
+          type: 'Expense',
           createdAt: dateTimeEvent,
         },
       });
@@ -64,7 +68,7 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
       postingData({
         description: eventDescription,
         amount: parseFloat(inputValueEvent),
-        type: 'Income',
+        type: 'Expense',
         dateTimeEvent,
       });
     } else {
@@ -76,7 +80,7 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
     const newIndex = {
       description: eventDescription,
       amount: parseFloat(inputValueEvent),
-      type: 'Income',
+      type: 'Expense',
       dateTimeEvent,
       id: index.id,
     };
@@ -88,8 +92,8 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
     <View style={styles.container}>
       {isNotification && (
         <CustomNotifications
-          message={'Income Data Submitted Sucessfully'}
-          backgroundColor={'green'}
+          message={'Expense Data Submitted Sucessfully'}
+          backgroundColor={'darkred'}
           duration={1500}
         />
       )}
@@ -103,7 +107,6 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
             setEventDescription(text);
           }}
         />
-      
       </View>
       <TouchableOpacity onPress={showDatePicker} activeOpacity={0.8}>
         <View style={styles.infoView}>
@@ -112,9 +115,7 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
           {/* date and time functionality */}
 
           <View>
-            <Text style={styles.dateTimeStyle}>
-              <Text>{dateTimeEvent}</Text>
-            </Text>
+            <Text style={styles.dateTimeStyle}>{dateTimeEvent}</Text>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="datetime"
@@ -130,29 +131,27 @@ function CustomIncomeDesign({buttonColor, borderColor, index}) {
         <Text style={styles.amountHeading}>Amount</Text>
         <TextInput
           placeholder="Amount"
-          value={String(inputValueEvent)}
           keyboardType="phone-pad"
-          style={[styles.amountBox, {borderColor: borderColor}]}
-          // detecting the changed state
+          value={String(inputValueEvent)}
+          style={[styles.amountBox, {borderColor: 'darkred'}]}
+          //  detecting changes for setting expense
           onChangeText={text => setInputValueEvent(text)}
         />
       </View>
       <View style={styles.buttonView}>
         {index ? (
           <TouchableOpacity
-            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            style={[styles.buttonAdd, {backgroundColor: 'darkred'}]}
             activeOpacity={0.8}
-            // setting the data in an empty array state
             onPress={handleEdit}>
             <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
-            style={[styles.buttonAdd, {backgroundColor: buttonColor}]}
+            style={[styles.buttonAdd, {backgroundColor: 'darkred'}]}
             activeOpacity={0.8}
-            // setting the data in an empty array state
-            onPress={handleAddIncome}>
-            <Text style={styles.buttonText}>Add Income</Text>
+            onPress={handleAddExpense}>
+            <Text style={styles.buttonText}>Add Expense</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -163,6 +162,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightgrey',
+  },
+  submittedContainer: {
+    flex: 1,
+    backgroundColor: 'black',
   },
   infoView: {
     marginTop: '5%',
@@ -180,6 +183,7 @@ const styles = StyleSheet.create({
   },
   amountBoxTwo: {
     borderBottomWidth: 1,
+    color: 'black',
   },
   buttonAdd: {
     width: '89%',
@@ -201,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomIncomeDesign;
+export default ExpenseFormScreen;
