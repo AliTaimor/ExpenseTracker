@@ -7,7 +7,7 @@ import {
 } from 'react';
 const MainContext = createContext();
 
-const apiUrl = 'http://192.168.10.5:3000';
+const apiUrl = 'http://192.168.10.18:3000';
 
 const formattedDate = createdAt => {
   return createdAt.toLocaleString();
@@ -135,9 +135,9 @@ function MainProvider({children}) {
       const response = await fetch(`${apiUrl}/data/${editedFormData.id}`, {
         method: 'PATCH',
         body: JSON.stringify(editedFormData),
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
       });
-        if (response.ok) {
+      if (response.ok) {
         const updatedData = allData.map(currElem => {
           if (currElem.id === editedFormData.id) {
             return {
@@ -149,7 +149,7 @@ function MainProvider({children}) {
           }
           return currElem;
         });
-          dispatch({ type: 'edit', payload: updatedData });
+        dispatch({type: 'edit', payload: updatedData});
       } else {
         console.error('Failed to update data on the server');
       }
@@ -157,7 +157,6 @@ function MainProvider({children}) {
       console.error('Error while updating data on the server:', error.message);
     }
   }
-  
 
   async function deleteTransactions(id) {
     await fetch(`${apiUrl}/data/${id}`, {

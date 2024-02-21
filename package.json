@@ -28,6 +28,7 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^13.14.0",
     "react-native-tab-view": "^3.5.2",
+    "react-native-toast-message": "^2.2.0",
     "react-redux": "^8.1.3",
     "redux": "^4.2.1",
     "server": "json-server --watch Data/Data.json --port 9000 --delay 500"

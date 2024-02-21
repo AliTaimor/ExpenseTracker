@@ -1,28 +1,24 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import {useMainContext} from '../Contexts/MainContext';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default function CustomNotifications({
   message = 'Add Your Message Here',
-  height = 50,
-  width = '75%',
+  width = wp('100%'),
   backgroundColor = 'lightblue',
-  borderRadius = 30,
-  position = 'absolute',
-  top = -170,
-  left = 55,
+  borderBottomRadius = wp('1%'),
   color = 'white',
   duration = 2000,
 }) {
   const {dispatch, isNotification} = useMainContext();
   const containerStyles = {
-    height: height,
     width: width,
     backgroundColor: backgroundColor,
-    borderRadius: borderRadius,
-    position: position,
-    top: top,
-    left: left,
+    borderBottomRadius: borderBottomRadius,
   };
   const messageStyle = {
     color: color,
