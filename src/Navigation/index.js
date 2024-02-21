@@ -12,14 +12,16 @@ import WelcomeContainer from '../Container/WelcomeAndLoginContainer/WelcomeConta
 import LoginContainer from '../Container/WelcomeAndLoginContainer/LoginContainer';
 import IncomeFormScreen from '../Screens/FormScreens/IncomeFormScreen';
 import ExpenseFormScreen from '../Screens/FormScreens/ExpenseFormScreen';
+import {FirebaseAppProvider} from '@react-native-firebase/app';
 
 const Stack = createNativeStackNavigator();
 function Navigation() {
   return (
-    <MainProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRoute="Home">
-          {/* <Stack.Screen
+    // <FirebaseAppProvider>
+      <MainProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRoute="Home">
+            {/* <Stack.Screen
             name="Welcome"
             component={WelcomeContainer}
             options={{headerShown: false}}
@@ -35,34 +37,35 @@ function Navigation() {
             options={{headerShown: false}}
           /> */}
 
-          <Stack.Screen
-            name="Home"
-            component={HomeContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="income"
-            component={IncomeContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="transactions"
-            component={TransactionContainer}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="IncomeFormScreen"
-            component={IncomeFormScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ExpenseFormScreen"
-            component={ExpenseFormScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </MainProvider>
+            <Stack.Screen
+              name="Home"
+              component={HomeContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="income"
+              component={IncomeContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="transactions"
+              component={TransactionContainer}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="IncomeFormScreen"
+              component={IncomeFormScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ExpenseFormScreen"
+              component={ExpenseFormScreen}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </MainProvider>
+    // </FirebaseAppProvider>
   );
 }
 export default Navigation;

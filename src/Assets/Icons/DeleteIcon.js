@@ -1,9 +1,13 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 const DeleteIcon = ({height, width, color}) => (
-  <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    height={height}
+    width={width}>
     <Path
-      d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+      d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM184 232H328c13.3 0 24 10.7 24 24s-10.7 24-24 24H184c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
       fill={color}
     />
   </Svg>

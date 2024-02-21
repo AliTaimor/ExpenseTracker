@@ -20,7 +20,9 @@ const initialState = {
   createdAt: new Date().toISOString(),
   isLoading: false,
   allData: [],
-  isNotification: false,
+  isNotificationIncome: false,
+  isNotificationExpense: false,
+  message: '',
 };
 
 function reducer(state, action) {
@@ -62,7 +64,14 @@ function reducer(state, action) {
     case 'notification':
       return {
         ...state,
-        isNotification: action.payload,
+        isNotificationIncome: action.payload.notify,
+        message: action.payload.message,
+      };
+    case 'expNotification':
+      return {
+        ...state,
+        isNotificationExpense: action.payload.notify,
+        message: action.payload.message,
       };
     case 'edit':
       return {...state, allData: action.payload};
@@ -82,7 +91,9 @@ function MainProvider({children}) {
       createdAt,
       isLoading,
       allData,
-      isNotification,
+      isNotificationIncome,
+      isNotificationExpense,
+      message,
     },
     dispatch,
   ] = useReducer(reducer, initialState);
@@ -192,8 +203,10 @@ function MainProvider({children}) {
         totalBalance,
         deleteTransactions,
         clearAllTransactions,
-        isNotification,
+        isNotificationIncome,
+        isNotificationExpense,
         editData,
+        message,
       }}>
       {children}
     </MainContext.Provider>

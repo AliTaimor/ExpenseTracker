@@ -6,7 +6,14 @@ const Tab = createMaterialTopTabNavigator();
 
 function ToptabNavigation() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({route}) => ({
+        tabBarActiveTintColor: route.name === 'Income' ? 'green' : 'darkred',
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {fontSize: 16, fontWeight: 'bold'},
+        tabBarStyle: {backgroundColor: 'black'},
+        tabBarIndicatorStyle: {backgroundColor: 'transparent'},
+      })}>
       <Tab.Screen name="Income" component={IncomeFormScreen} />
       <Tab.Screen name="Expense" component={ExpenseFormScreen} />
     </Tab.Navigator>

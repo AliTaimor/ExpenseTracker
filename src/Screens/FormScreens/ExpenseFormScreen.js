@@ -265,7 +265,9 @@ function ExpenseFormScreen() {
     setDatePickerVisibility,
     formattedDate,
     postingData,
-    isNotification,
+    message,
+    isNotificationExpense,
+    editData,
   } = useMainContext();
 
   const route = useRoute();
@@ -309,8 +311,8 @@ function ExpenseFormScreen() {
         },
       });
       dispatch({
-        type: 'notification',
-        payload: true,
+        type: 'expNotification',
+        payload: {message: 'Data submitted successfully', notify: true},
       });
       postingData({
         description: eventDescription,
@@ -318,6 +320,9 @@ function ExpenseFormScreen() {
         type: 'Expense',
         dateTimeEvent,
       });
+      setEventDescription('');
+      setDateTimeEvent(formattedDate(new Date()));
+      setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
     }
@@ -332,7 +337,15 @@ function ExpenseFormScreen() {
       id: index.id,
     };
 
+    dispatch({
+      type: 'expenseNotification',
+      payload: {message: ' Data edited successfully ', notify: true},
+    });
+
     editData(newIndex);
+    setEventDescription('');
+    setDateTimeEvent(formattedDate(new Date()));
+    setInputValueEvent('');
   };
 
   return (
@@ -340,9 +353,9 @@ function ExpenseFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        {isNotification && (
+        {isNotificationExpense && (
           <CustomNotifications
-            message={'Expense Data Submitted Successfully'}
+            message={message}
             backgroundColor={'darkred'}
             duration={1500}
           />

@@ -1,10 +1,7 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
 import {useMainContext} from '../Contexts/MainContext';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 
 export default function CustomNotifications({
   message = 'Add Your Message Here',
@@ -14,7 +11,8 @@ export default function CustomNotifications({
   color = 'white',
   duration = 2000,
 }) {
-  const {dispatch, isNotification} = useMainContext();
+  const {dispatch, isNotificationIncome, isNotificationExpense} =
+    useMainContext();
   const containerStyles = {
     width: width,
     backgroundColor: backgroundColor,
@@ -25,12 +23,16 @@ export default function CustomNotifications({
   };
 
   useEffect(() => {
-    if (!isNotification) return;
+    if (!isNotificationIncome && !isNotificationExpense) return;
 
     setTimeout(() => {
-      dispatch({type: 'notification', payload: false});
+      if (isNotificationIncome) {
+        dispatch({type: 'notification', payload: {notify: false}});
+      } else {
+        dispatch({type: 'expNotification', payload: {notify: false}});
+      }
     }, duration);
-  }, [isNotification]);
+  }, [isNotificationIncome, isNotificationExpense]);
   return (
     <View style={[styles.container, containerStyles]}>
       <Text style={messageStyle}>{message}</Text>

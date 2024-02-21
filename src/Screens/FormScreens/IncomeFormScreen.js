@@ -24,8 +24,9 @@ function IncomeFormScreen() {
     postingData,
     dispatch,
     formattedDate,
-    isNotification,
+    isNotificationIncome,
     editData,
+    message,
   } = useMainContext();
 
   const route = useRoute();
@@ -71,7 +72,7 @@ function IncomeFormScreen() {
       });
       dispatch({
         type: 'notification',
-        payload: true,
+        payload: {message: ' Data submitted successfully ', notify: true},
       });
       postingData({
         description: eventDescription,
@@ -79,6 +80,9 @@ function IncomeFormScreen() {
         type: 'Income',
         dateTimeEvent,
       });
+      setEventDescription('');
+      setDateTimeEvent(formattedDate(new Date()));
+      setInputValueEvent('');
     } else {
       Alert.alert('one or more fields left empty');
     }
@@ -94,9 +98,17 @@ function IncomeFormScreen() {
     };
 
     editData(newIndex);
+
+    dispatch({
+      type: 'notification',
+      payload: {message: ' Data edited successfully ', notify: true},
+    });
+    setEventDescription('');
+    setDateTimeEvent(formattedDate(new Date()));
+    setInputValueEvent('');
   };
 
-  console.log('Notification', isNotification);
+  console.log('Notification', isNotificationIncome);
 
   return (
     <ScrollView
@@ -104,9 +116,9 @@ function IncomeFormScreen() {
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
         <View style={styles.notification}>
-          {isNotification && (
+          {isNotificationIncome && (
             <CustomNotifications
-              message={'Income Data Submitted Sucessfully'}
+              message={message}
               backgroundColor={'green'}
               duration={1500}
             />

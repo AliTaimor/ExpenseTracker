@@ -9,6 +9,11 @@ import {
 import CustomBottomSheet from '../Components/CustomBottomSheet';
 import {DeleteIcon} from '../Assets/Icons';
 import {useMainContext} from '../Contexts/MainContext';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import EditIcon from '../Assets/Icons/EditIcon';
 
 function TransactionScreen({navigation}) {
   const {
@@ -41,9 +46,7 @@ function TransactionScreen({navigation}) {
 
   const renderingIncomeData = allData.map(curr =>
     curr.type == 'Income' ? (
-      <TouchableOpacity
-        onPress={() => handleEdit(curr)}
-        style={styles.innerContainerTwo}>
+      <View style={styles.innerContainerTwo}>
         <View key={curr.id} style={styles.textDeleteContainer}>
           <View style={styles.incomeItem}>
             <Text style={styles.textContent}>{curr.type}</Text>
@@ -59,19 +62,22 @@ function TransactionScreen({navigation}) {
               Your Income: {curr.amount}.Rs
             </Text>
           </View>
-          <View style={styles.deleteIconView}>
+          <View style={styles.editDeleteIconView}>
             <TouchableOpacity
               onPress={() => deleteTransaction(curr.id)}
-              acitiveOpacity={0.8}>
-              <DeleteIcon height={20} width={20} color={'red'} />
+              activeOpacity={0.6}>
+              <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleEdit(curr)}
+              activeOpacity={0.6}>
+              <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     ) : (
-      <TouchableOpacity
-        onPress={() => handleEdit(curr)}
-        style={styles.innerContainerTwo}>
+      <View onPress={() => handleEdit(curr)} style={styles.innerContainerTwo}>
         <View key={curr.id} style={styles.textDeleteContainer}>
           <View style={styles.expenseItem}>
             <Text style={styles.expenseContent}>{curr.type}</Text>
@@ -87,15 +93,20 @@ function TransactionScreen({navigation}) {
               Your Expense: {curr.amount}.Rs
             </Text>
           </View>
-          <View style={styles.deleteIconView}>
+          <View style={styles.editDeleteIconView}>
             <TouchableOpacity
               onPress={() => deleteTransaction(curr.id)}
-              acitiveOpacity={0.8}>
-              <DeleteIcon height={20} width={20} color={'red'} />
+              activeOpacity={0.6}>
+              <DeleteIcon height={hp('8%')} width={wp('6%')} color={'red'} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleEdit(curr)}
+              activeOpacity={0.6}>
+              <EditIcon height={hp('8%')} width={wp('6%')} color={'black'} />
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     ),
   );
 
@@ -103,7 +114,7 @@ function TransactionScreen({navigation}) {
     <View style={styles.container}>
       <Button title="Clear All" onPress={clearAll} color="red" />
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <View style={{flex: 1, alignItems: 'center', marginVertical: 40}}>
+        <View style={{flex: 1, alignItems: 'center', marginVertical: hp('2%')}}>
           {/* showing income and expense data */}
           {renderingIncomeData}
           {/* {renderingExpenseData} */}
@@ -131,18 +142,20 @@ const styles = StyleSheet.create({
   },
   textDeleteContainer: {
     flexDirection: 'row',
-    gap: 30,
+    gap: wp('5%'),
   },
-  deleteIconView: {
-    marginTop: 15,
+  editDeleteIconView: {
+    flexDirection: 'row',
+    marginTop: hp('1%'),
+    gap: wp('2%'),
   },
   innerContainerTwo: {
-    marginVertical: 10,
+    marginVertical: hp('1%'),
     backgroundColor: 'white',
     borderWidth: 1,
-    borderRadius: 20,
-    width: '90%',
-    height: '15%',
+    borderRadius: wp('5%'),
+    width: wp('90%'),
+    height: hp('14%'),
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
@@ -150,14 +163,15 @@ const styles = StyleSheet.create({
   textContent: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: hp('1.5%'),
     color: 'green',
   },
   expenseContent: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 12,
+    fontSize: hp('1.5%'),
     color: 'red',
   },
 });
+
 export default TransactionScreen;
