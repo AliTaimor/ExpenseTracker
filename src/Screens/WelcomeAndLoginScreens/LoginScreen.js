@@ -24,9 +24,6 @@ export default function LoginScreen({
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log(userNameOrEmail);
-  console.log(password);
-
   async function handleSignInWithEmailAndPassword() {
     try {
       if (!userNameOrEmail || !password)
