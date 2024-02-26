@@ -8,7 +8,7 @@ function ToptabNavigation() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarActiveTintColor: route.name === 'Income' ? 'green' : 'darkred',
+        tabBarActiveTintColor: route.name === 'Income' ? '#29F300' : 'darkred',
         tabBarInactiveTintColor: 'gray',
         tabBarLabelStyle: {fontSize: 16, fontWeight: 'bold'},
         tabBarStyle: {backgroundColor: 'black'},
