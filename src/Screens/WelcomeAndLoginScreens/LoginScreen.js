@@ -84,8 +84,8 @@ export default function LoginScreen({
             <TouchableOpacity
               onPress={() =>
                 handleSignInWithGoogle().then(() => {
-                  console.log('Signed in with Google!'),
-                    navigation.navigate('Home');
+                  console.log('Signed in with Google!');
+                  navigation.navigate('Home');
                 })
               }>
               <GoogleIcon height={hp('4%')} width={wp('10')} />

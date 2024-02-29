@@ -5,10 +5,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-export default function WelcomeScreen({
-  handleNavigatetoLogin,
-  handleNavigatetoRegister,
-}) {
+function WelcomeScreen({handleNavigatetoLogin, handleNavigatetoRegister}) {
   return (
     <View style={styles.container}>
       <View style={styles.TextView}>
@@ -88,3 +85,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+export default WelcomeScreen;

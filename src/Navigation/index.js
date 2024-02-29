@@ -16,14 +16,15 @@ import IncomeFormScreen from '../Screens/FormScreens/IncomeFormScreen';
 import ExpenseFormScreen from '../Screens/FormScreens/ExpenseFormScreen';
 
 const Stack = createNativeStackNavigator();
+
 function Navigation() {
   return (
     <MainProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRoute="Home">
+        <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
-            name="Welcome"
-            component={WelcomeContainer}
+            name="Home"
+            component={HomeContainer}
             options={{headerShown: false}}
           />
           <Stack.Screen
@@ -38,8 +39,8 @@ function Navigation() {
           />
 
           <Stack.Screen
-            name="Home"
-            component={HomeContainer}
+            name="Welcome"
+            component={WelcomeContainer}
             options={{headerShown: false}}
           />
           <Stack.Screen

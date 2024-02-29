@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Image} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import {
@@ -13,27 +13,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import auth from '@react-native-firebase/auth';
-
-function HomeScreen({handleNavigate, handleNavigateTransactions, navigation}) {
-  const [email, setEmail] = useState('');
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(user => {
-      if (user) {
-        // User is signed in => Get user info and stay on the Home Screen
-        setEmail(user.email);
-        setUser(user);
-      } else {
-        // No user is signed in => Navigate to the Authentication Screen
-        console.log('No user is signed in return to Home screen');
-        navigation.navigate('Login');
-      }
-    });
-    return () => unsubscribe();
-  }, []);
-
+function HomeScreen({handleNavigate, handleNavigateTransactions}) {
   return (
     <View style={styles.container}>
       {/* logo view */}
@@ -134,6 +114,7 @@ const styles = StyleSheet.create({
     height: hp('22%'),
   },
   logoView: {
+    position: 'relative',
     alignItems: 'center',
     marginTop: hp('5%'),
   },
@@ -155,9 +136,10 @@ const styles = StyleSheet.create({
   },
   customContentView: {
     alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     top: hp('30%'),
-    left: wp('5%'),
+    left: wp('9%'),
   },
 });
 
