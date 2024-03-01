@@ -1,8 +1,10 @@
-import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import {
+  CalendarIcon,
   ExpenseIcon,
+  HamBurgerIcon,
   IncomeIcon,
   ReportIcon,
   Transaction,
@@ -12,11 +14,49 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import HeaderComponent from '../Components/HeaderComponent';
+import Drawer from '../Components/Drawer';
 
-function HomeScreen({handleNavigate, handleNavigateTransactions}) {
+function HomeScreen({
+  handleNavigate,
+  handleNavigateTransactions,
+  handleNavigateHome,
+  handleNavigateCalendar,
+  isDrawerOpen,
+  setIsDrawerOpen,
+}) {
   return (
     <View style={styles.container}>
+      <HeaderComponent
+        headerFirstIcon={
+          <HamBurgerIcon
+            color={'white'}
+            height={25}
+            width={25}
+            handleClick={() => setIsDrawerOpen(true)}
+          />
+        }
+        text={'Expense Tracker'}
+        headerSecondIcon={
+          <CalendarIcon
+            color={'white'}
+            height={25}
+            width={25}
+            handleClick={() => {
+              handleNavigateCalendar();
+            }}
+          />
+        }
+      />
+
       {/* logo view */}
+      <Drawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        handleNavigateHome={handleNavigateHome}
+        handleNavigateCalendar={handleNavigateCalendar}
+        setIsDrawerOpen={setIsDrawerOpen}
+      />
       <View style={styles.logoView}>
         <Image
           source={require('../Assets/Images/Expenselogo.png')}
@@ -138,8 +178,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    top: hp('30%'),
-    left: wp('9%'),
+    top: hp('36%'),
+    left: wp('11%'),
   },
 });
 
