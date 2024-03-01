@@ -5,6 +5,9 @@ import Transaction from './Transaction';
 import DeleteIcon from './DeleteIcon';
 import BackIcon from './BackIcon';
 import GoogleIcon from './GoogleIcon';
+import HamBurgerIcon from './HamBurgerIcon';
+import CalendarIcon from './CalendarIcon';
+
 export {
   IncomeIcon,
   ExpenseIcon,
@@ -12,7 +15,7 @@ export {
   Transaction,
   DeleteIcon,
   BackIcon,
-  GoogleIcon
-
-
+  GoogleIcon,
+  HamBurgerIcon,
+  CalendarIcon,
 };

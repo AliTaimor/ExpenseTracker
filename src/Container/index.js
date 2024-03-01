@@ -4,6 +4,8 @@ import TransactionContainer from './TransactionContainer';
 import WelcomeContainer from './WelcomeAndLoginContainer/WelcomeContainer';
 import LoginContainer from './WelcomeAndLoginContainer/LoginContainer';
 import RegisterContainer from './WelcomeAndLoginContainer/RegisterContainer';
+import CalendarContainer from './CalendarContainer';
+
 export {
   HomeContainer,
   IncomeContainer,
@@ -11,4 +13,5 @@ export {
   WelcomeContainer,
   LoginContainer,
   RegisterContainer,
+  CalendarContainer,
 };

@@ -49,53 +49,6 @@ export default function LoginContainer({navigation}) {
     }
   }
 
-  // async function handleSignInWithGoogle() {
-  //   try {
-  //     // Check if your device supports Google Play
-  //     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-
-  //     // Get the users ID token
-  //     const {idToken} = await GoogleSignin.signIn({
-  //       forceCodeForRefreshToken: true,
-  //     });
-  //     console.log(idToken);
-
-  //     // Create a Google credential with the token
-  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  //     // Sign-in the user with the credential
-  //     const userCredential = await auth().signInWithCredential(
-  //       googleCredential,
-  //     );
-
-  //     // Check if the user exists in the authentication database
-  //     if (!userCredential.additionalUserInfo.isNewUser) {
-  //       // User exists, continue with the sign-in process
-  //       console.log('Signed in with Google!');
-  //       navigation.navigate('Home');
-  //     } else {
-  //       // User does not exist, display an error message
-  //       Alert.alert('Sign-in Failed', 'User not found. Please register.');
-  //       // Sign out the user from Google
-  //       await GoogleSignin.signOut();
-  //     }
-  //   } catch (error) {
-  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //       // user cancelled the login flow
-  //       console.log(statusCodes.SIGN_IN_CANCELLED);
-  //     } else if (error.code === statusCodes.IN_PROGRESS) {
-  //       // operation (e.g. sign in) is in progress already
-  //       console.log(statusCodes.IN_PROGRESS);
-  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //       // play services not available or outdated
-  //       console.log(statusCodes.PLAY_SERVICES_NOT_AVAILABLE);
-  //     } else {
-  //       // some other error happened
-  //       console.log(error.message);
-  //     }
-  //   }
-  // }
-
   return (
     <LoginScreen
       handleNavigateBack={handleNavigateBack}

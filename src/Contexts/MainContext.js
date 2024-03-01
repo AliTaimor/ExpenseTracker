@@ -108,7 +108,8 @@ function MainProvider({children}) {
     .filter(currElem => currElem.type === 'Expense')
     .reduce((acc, currElem) => acc + currElem.amount, 0);
 
-  const totalBalance = totalIncome - totalExpense;
+  // const totalBalance = totalIncome - totalExpense;
+  const totalBalance = 0;
 
   useEffect(() => {
     async function fetchingIncome() {
