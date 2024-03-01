@@ -28,7 +28,7 @@ function Navigation() {
     const checkUser = async () => {
       const currentUser = auth().currentUser;
       console.log(currentUser);
-      setUserExists(!!currentUser); // !! converts value to boolean
+      setUserExists(!!currentUser);
     };
 
     checkUser();
