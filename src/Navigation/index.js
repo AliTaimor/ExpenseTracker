@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import auth from '@react-native-firebase/auth';
 
 import {
   IncomeContainer,
@@ -10,21 +11,42 @@ import {
 } from '../Container';
 
 import {MainProvider} from '../Contexts/MainContext';
-import WelcomeContainer from '../Container/WelcomeAndLoginContainer/WelcomeContainer';
-import LoginContainer from '../Container/WelcomeAndLoginContainer/LoginContainer';
-import IncomeFormScreen from '../Screens/FormScreens/IncomeFormScreen';
-import ExpenseFormScreen from '../Screens/FormScreens/ExpenseFormScreen';
+import {
+  WelcomeContainer,
+  LoginContainer,
+  CalendarContainer,
+} from '../Container';
+import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
+import Drawer from '../Components/Drawer';
 
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
+  const [userExists, setUserExists] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const currentUser = auth().currentUser;
+      console.log(currentUser);
+      setUserExists(!!currentUser); // !! converts value to boolean
+    };
+
+    checkUser();
+  }, []);
+
   return (
     <MainProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Welcome">
+        {/* <Stack.Navigator initialRouteName={userExists ? 'Welcome' : 'Home'}> */}
+        <Stack.Navigator initialRouteName={'Home'}>
           <Stack.Screen
-            name="Home"
-            component={HomeContainer}
+            name="Welcome"
+            component={WelcomeContainer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterContainer}
             options={{headerShown: false}}
           />
           <Stack.Screen
@@ -33,14 +55,8 @@ function Navigation() {
             options={{headerShown: false}}
           />
           <Stack.Screen
-            name="Register"
-            component={RegisterContainer}
-            options={{headerShown: false}}
-          />
-
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeContainer}
+            name="Home"
+            component={HomeContainer}
             options={{headerShown: false}}
           />
           <Stack.Screen
@@ -61,6 +77,16 @@ function Navigation() {
           <Stack.Screen
             name="ExpenseFormScreen"
             component={ExpenseFormScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Calendar"
+            component={CalendarContainer}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Drawer"
+            component={Drawer}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
