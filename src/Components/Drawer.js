@@ -18,6 +18,7 @@ function Drawer({
   handleNavigateHome,
   handleNavigateCalendar,
   setIsDrawerOpen,
+  handleLogout,
 }) {
   return (
     <Modal
@@ -46,7 +47,9 @@ function Drawer({
               />
             </View>
           </View>
+
           <View style={styles.line} />
+
           <View>
             <TouchableOpacity
               onPress={() => {
@@ -64,6 +67,12 @@ function Drawer({
                 setIsDrawerOpen(false);
               }}>
               <Text style={styles.text}>Calendar</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity onPress={handleLogout}>
+              <Text>Log Out</Text>
             </TouchableOpacity>
           </View>
         </View>

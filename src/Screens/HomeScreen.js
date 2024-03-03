@@ -24,6 +24,7 @@ function HomeScreen({
   handleNavigateCalendar,
   isDrawerOpen,
   setIsDrawerOpen,
+  handleLogout,
 }) {
   return (
     <View style={styles.container}>
@@ -56,6 +57,7 @@ function HomeScreen({
         handleNavigateHome={handleNavigateHome}
         handleNavigateCalendar={handleNavigateCalendar}
         setIsDrawerOpen={setIsDrawerOpen}
+        handleLogout={handleLogout}
       />
       <View style={styles.logoView}>
         <Image
