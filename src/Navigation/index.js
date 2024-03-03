@@ -37,8 +37,7 @@ function Navigation() {
   return (
     <MainProvider>
       <NavigationContainer>
-        {/* <Stack.Navigator initialRouteName={userExists ? 'Welcome' : 'Home'}> */}
-        <Stack.Navigator initialRouteName={'Home'}>
+        <Stack.Navigator initialRouteName={userExists ? 'Welcome' : 'Home'}>
           <Stack.Screen
             name="Welcome"
             component={WelcomeContainer}
