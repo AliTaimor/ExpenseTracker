@@ -7,7 +7,10 @@ import BackIcon from './BackIcon';
 import GoogleIcon from './GoogleIcon';
 import HamBurgerIcon from './HamBurgerIcon';
 import CalendarIcon from './CalendarIcon';
-
+import LogoutIcon from './LogoutIcon';
+import DrawerCalenderIcon from './DrawerCalenderIcon';
+import SettingsIcon from './SettingsIcon';
+import HomeIcon from './HomeIcon'; 
 export {
   IncomeIcon,
   ExpenseIcon,
@@ -18,4 +21,8 @@ export {
   GoogleIcon,
   HamBurgerIcon,
   CalendarIcon,
+  LogoutIcon,
+  DrawerCalenderIcon,
+  SettingsIcon,
+  HomeIcon, 
 };

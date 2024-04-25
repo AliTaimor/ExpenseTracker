@@ -12,105 +12,82 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {BackIcon, GoogleIcon} from '../../Assets/Icons';
-import {Alert} from 'react-native';
-import auth from '@react-native-firebase/auth';
+
 
 export default function LoginScreen({
   handleNavigateBack,
   handleNavigatetoRegister,
-  handleSignInWithGoogle,
-  navigation,
+
 }) {
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSignInWithEmailAndPassword() {
-    try {
-      if (!userNameOrEmail || !password)
-        console.log('Invalid password or email');
-      // Sign in the user with email and password
-      await auth().signInWithEmailAndPassword(userNameOrEmail, password);
-
-      // If successful, navigate to Home screen
-      navigation.navigate('Home');
-    } catch (error) {
-      // Handle sign-in errors
-      Alert.alert('Sign-in Failed', error.message);
-    }
-  }
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.backIconView}>
-          <TouchableOpacity onPress={handleNavigateBack}>
-            <BackIcon height={hp('4%')} width={wp('10%')} color="black" />
-          </TouchableOpacity>
-        </View>
+    <>
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.backIconView}>
+            <TouchableOpacity onPress={handleNavigateBack}>
+              <BackIcon height={hp('4%')} width={wp('10%')} color="black" />
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.headingView}>
-          <Text style={styles.headingOne}>Let's Sign you in.</Text>
-          <Text style={styles.headingTwo}>Welcome back</Text>
-          <Text style={styles.headingThree}>You have been missed!</Text>
-        </View>
+          <View style={styles.headingView}>
+            <Text style={styles.headingOne}>Let's Sign you in.</Text>
+            <Text style={styles.headingTwo}>Welcome back</Text>
+            <Text style={styles.headingThree}>You have been missed!</Text>
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.usernameInputText}>Username or Email</Text>
-          <TextInput
-            style={styles.input}
-            value={userNameOrEmail}
-            placeholder="Enter a Username"
-            placeholderTextColor="gray"
-            onChangeText={text => setUserNameOrEmail(text)}
-          />
-          <Text style={styles.passwordInputText}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Password"
-            placeholderTextColor="gray"
-            secureTextEntry
-            value={password}
-            onChangeText={text => setPassword(text)}
-          />
-        </View>
-        <View style={styles.lineContainer}>
-          <View style={styles.line}></View>
-          <Text style={styles.lineText}>Or</Text>
-          <View style={styles.line}></View>
-        </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.usernameInputText}>Username or Email</Text>
+            <TextInput
+              style={styles.input}
+              value={userNameOrEmail}
+              placeholder="Enter a Username"
+              placeholderTextColor="gray"
+              onChangeText={text => setUserNameOrEmail(text)}
+            />
+            <Text style={styles.passwordInputText}>Password</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Password"
+              placeholderTextColor="gray"
+              secureTextEntry
+              value={password}
+              onChangeText={text => setPassword(text)}
+            />
+          </View>
+          <View style={styles.lineContainer}>
+            <View style={styles.line}></View>
+            <Text style={styles.lineText}>Or</Text>
+            <View style={styles.line}></View>
+          </View>
 
-        <View style={styles.iconContainer}>
-          <View style={styles.innerIconContainer}>
+          <View style={styles.iconContainer}>
+            <View style={styles.innerIconContainer}>
+              <TouchableOpacity>
+                <GoogleIcon height={hp('4%')} width={wp('10')} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.registerButtonView}>
+            <Text>Don't have an account?</Text>
             <TouchableOpacity
-              onPress={() =>
-                handleSignInWithGoogle().then(() => {
-                  console.log('Signed in with Google!');
-                  navigation.navigate('Home');
-                })
-              }>
-              <GoogleIcon height={hp('4%')} width={wp('10')} />
+              activeOpacity={0.6}
+              onPress={handleNavigatetoRegister}>
+              <Text style={styles.registerButtonText}>Register</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonView}>
+            <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
+              <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
           </View>
         </View>
-
-        <View style={styles.registerButtonView}>
-          <Text>Don't have an account?</Text>
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={handleNavigatetoRegister}>
-            <Text style={styles.registerButtonText}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.buttonView}>
-          <TouchableOpacity
-            style={styles.loginButton}
-            activeOpacity={0.8}
-            onPress={handleSignInWithEmailAndPassword}>
-            <Text style={styles.loginButtonText}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

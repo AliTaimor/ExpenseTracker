@@ -7,6 +7,10 @@ export default function RegisterContainer({navigation}) {
   };
 
   return (
-    <RegisterScreen handleNavigate={handleNavigate} navigation={navigation} />
+    <RegisterScreen
+      setCurrentUser={setCurrentUser}
+      handleNavigate={handleNavigate}
+      navigation={navigation}
+    />
   );
 }

@@ -13,7 +13,7 @@ function CustomContent() {
         {/* added the state prop to show the updated income data */}
 
         {isLoading ? (
-          <CustomSpinner />
+          <CustomSpinner size={'small'} color={"#0000ff"} />
         ) : (
           <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
         )}
@@ -22,7 +22,7 @@ function CustomContent() {
         <Text style={styles.expenseText}>Expense</Text>
 
         {isLoading ? (
-          <CustomSpinner />
+          <CustomSpinner size={'small'} color={"#0000ff"}/>
         ) : (
           <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
         )}
@@ -31,7 +31,7 @@ function CustomContent() {
         <Text style={styles.balanceText}>Balance</Text>
         {/* calculated balance on the top of the screen and shown on the balance content */}
         {isLoading ? (
-          <CustomSpinner />
+          <CustomSpinner size={'small'} color={"#0000ff"}/>
         ) : (
           <Text style={styles.balanceContent}>{totalBalance} Rs</Text>
         )}

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import CustomButton from '../Components/CustomButton';
+
 import {
   CalendarIcon,
   ExpenseIcon,
@@ -22,9 +23,10 @@ function HomeScreen({
   handleNavigateTransactions,
   handleNavigateHome,
   handleNavigateCalendar,
+  handleNavigateSetting,
   isDrawerOpen,
   setIsDrawerOpen,
-  handleLogout,
+  handleNavigateLogin,
 }) {
   return (
     <View style={styles.container}>
@@ -57,7 +59,8 @@ function HomeScreen({
         handleNavigateHome={handleNavigateHome}
         handleNavigateCalendar={handleNavigateCalendar}
         setIsDrawerOpen={setIsDrawerOpen}
-        handleLogout={handleLogout}
+        handleNavigateSetting={handleNavigateSetting}
+        handleNavigateLogin={handleNavigateLogin}
       />
       <View style={styles.logoView}>
         <Image

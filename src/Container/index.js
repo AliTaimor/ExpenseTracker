@@ -5,6 +5,7 @@ import WelcomeContainer from './WelcomeAndLoginContainer/WelcomeContainer';
 import LoginContainer from './WelcomeAndLoginContainer/LoginContainer';
 import RegisterContainer from './WelcomeAndLoginContainer/RegisterContainer';
 import CalendarContainer from './CalendarContainer';
+import SettingsContainer from './SettingsContainer';
 
 export {
   HomeContainer,
@@ -14,4 +15,5 @@ export {
   LoginContainer,
   RegisterContainer,
   CalendarContainer,
+  SettingsContainer,
 };

@@ -42,3 +42,4 @@ function HamBurgerIcon({height, width, color, handleClick}) {
 }
 
 export default HamBurgerIcon;
+

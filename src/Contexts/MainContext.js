@@ -1,3 +1,4 @@
+import {getData} from '../Services/apiData';
 import {
   createContext,
   useContext,
@@ -6,8 +7,6 @@ import {
   useReducer,
 } from 'react';
 const MainContext = createContext();
-
-const apiUrl = 'http://192.168.10.18:3000';
 
 const formattedDate = createdAt => {
   return createdAt.toLocaleString();
@@ -112,77 +111,22 @@ function MainProvider({children}) {
   const totalBalance = 0;
 
   useEffect(() => {
-    async function fetchingIncome() {
-      dispatch({type: 'loading'});
-      try {
-        const response = await fetch(`${apiUrl}/data`);
-        const data = await response.json();
-        dispatch({type: 'allData', payload: data});
-      } catch (err) {
-        console.error(err.message);
-      } finally {
-        dispatch({type: 'datarecieved'});
-      }
+    async function fetchData() {
+      getData().then(data => console.log(data));
+      console.log(mydata);
     }
-
-    fetchingIncome();
+    fetchData();
   }, []);
 
   async function postingData(formData) {
     if (!formData) return;
-    try {
-      const response = await fetch(`${apiUrl}/data`, {
-        method: 'POST',
-        body: JSON.stringify(formData),
-      });
-      const data = await response.json();
-      dispatch({type: 'postingData', payload: data});
-    } catch (err) {
-      console.error(err.message);
-    }
   }
   async function editData(editedFormData) {
     if (!editedFormData) return;
-    try {
-      const response = await fetch(`${apiUrl}/data/${editedFormData.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(editedFormData),
-        headers: {'Content-Type': 'application/json'},
-      });
-      if (response.ok) {
-        const updatedData = allData.map(currElem => {
-          if (currElem.id === editedFormData.id) {
-            return {
-              ...currElem,
-              amount: editedFormData.amount,
-              createdAt: editedFormData.dateTimeEvent,
-              description: editedFormData.description,
-            };
-          }
-          return currElem;
-        });
-        dispatch({type: 'edit', payload: updatedData});
-      } else {
-        console.error('Failed to update data on the server');
-      }
-    } catch (error) {
-      console.error('Error while updating data on the server:', error.message);
-    }
   }
 
-  async function deleteTransactions(id) {
-    await fetch(`${apiUrl}/data/${id}`, {
-      method: 'DELETE',
-    });
-    const updatedData = allData.filter(currElem => id !== currElem.id);
-    dispatch({type: 'allData', payload: updatedData});
-  }
-  async function clearAllTransactions() {
-    await fetch(`${apiUrl}/myExpense/myIncome`, {
-      method: 'DELETE',
-    });
-    dispatch({type: 'clearAll'});
-  }
+  async function deleteTransactions(id) {}
+  async function clearAllTransactions() {}
 
   return (
     <MainContext.Provider

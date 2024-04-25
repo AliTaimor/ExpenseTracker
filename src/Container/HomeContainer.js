@@ -1,11 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {HomeScreen} from '../Screens';
-import auth from '@react-native-firebase/auth';
-import {Alert} from 'react-native';
-
 function HomeContainer({navigation}) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const handleNavigate = () => {
     navigation.navigate('income');
   };
@@ -20,15 +16,12 @@ function HomeContainer({navigation}) {
   const handleNavigateCalendar = () => {
     navigation.navigate('Calendar');
   };
+  const handleNavigateSetting = () => {
+    navigation.navigate('Settings');
+  };
 
-  const handleLogout = async () => {
-    try {
-      await auth().signOut();
-      navigation.navigate('Login');
-    } catch (error) {
-      Alert.alert('Failed to logout please try again');
-      console.error(error);
-    }
+  const handleNavigateLogin = () => {
+    navigation.navigate('Login');
   };
 
   return (
@@ -37,9 +30,10 @@ function HomeContainer({navigation}) {
       handleNavigateTransactions={handleNavigateTransactions}
       handleNavigateHome={handleNavigateHome}
       handleNavigateCalendar={handleNavigateCalendar}
+      handleNavigateSetting={handleNavigateSetting}
       isDrawerOpen={isDrawerOpen}
       setIsDrawerOpen={setIsDrawerOpen}
-      handleLogout={handleLogout}
+      handleNavigateLogin={handleNavigateLogin}
     />
   );
 }

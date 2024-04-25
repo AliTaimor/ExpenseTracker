@@ -1,16 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
+import {NavigationContainer} from '@react-navigation/native';
 
 import {
   IncomeContainer,
   HomeContainer,
   TransactionContainer,
   RegisterContainer,
+  SettingsContainer,
 } from '../Container';
 
-import {MainProvider} from '../Contexts/MainContext';
 import {
   WelcomeContainer,
   LoginContainer,
@@ -18,26 +17,14 @@ import {
 } from '../Container';
 import {IncomeFormScreen, ExpenseFormScreen} from '../Screens';
 import Drawer from '../Components/Drawer';
-
+import {MainProvider} from '../Contexts/MainContext';
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
-  const [userExists, setUserExists] = useState(false);
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const currentUser = auth().currentUser;
-      console.log(currentUser);
-      setUserExists(!!currentUser);
-    };
-
-    checkUser();
-  }, []);
-
   return (
     <MainProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={userExists ? 'Welcome' : 'Home'}>
+        <Stack.Navigator initialRouteName={'Home'}>
           <Stack.Screen
             name="Welcome"
             component={WelcomeContainer}

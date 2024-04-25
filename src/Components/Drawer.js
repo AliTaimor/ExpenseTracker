@@ -11,14 +11,19 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import {
+  CalendarIcon,
+  HomeIcon,
+  LogoutIcon,
+  SettingsIcon,
+} from '../Assets/Icons';
 function Drawer({
   isOpen,
   onClose,
   handleNavigateHome,
   handleNavigateCalendar,
+  handleNavigateSetting,
   setIsDrawerOpen,
-  handleLogout,
 }) {
   return (
     <Modal
@@ -36,44 +41,78 @@ function Drawer({
         <View style={styles.drawerContainer}>
           {/* Drawer content */}
           <View style={styles.headingProfileContainer}>
-            <View>
-              <Text style={styles.heading}>Expense Tracker </Text>
+            <View style={styles.headingView}>
+              <Text style={styles.heading}>Expense </Text>
+              <Text style={styles.headingTwo}>Tracker </Text>
             </View>
-
-            <View>
-              <Image
-                source={require('../Assets/Images/Expenselogo.png')}
-                style={styles.profilePic}
-              />
-            </View>
+            <View></View>
           </View>
-
           <View style={styles.line} />
+          <View style={styles.drawerContentView}>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  handleNavigateCalendar();
+                  setIsDrawerOpen(false);
+                }}>
+                <View style={styles.drawerContent}>
+                  <CalendarIcon
+                    height={hp('3%')}
+                    width={wp('8%')}
+                    color={'white'}
+                  />
 
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                handleNavigateHome();
-                setIsDrawerOpen(false);
-              }}>
-              <Text style={styles.text}>Home</Text>
-            </TouchableOpacity>
-          </View>
+                  <Text style={styles.text}>Calendar</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  handleNavigateHome();
+                  setIsDrawerOpen(false);
+                }}>
+                <View style={styles.drawerContent}>
+                  <HomeIcon
+                    height={hp('3%')}
+                    width={wp('8%')}
+                    color={'white'}
+                  />
 
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                handleNavigateCalendar();
-                setIsDrawerOpen(false);
-              }}>
-              <Text style={styles.text}>Calendar</Text>
-            </TouchableOpacity>
-          </View>
+                  <Text style={styles.text}>Home</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  handleNavigateSetting();
+                  setIsDrawerOpen(false);
+                }}>
+                <View style={styles.drawerContent}>
+                  <SettingsIcon
+                    height={hp('3%')}
+                    width={wp('8%')}
+                    color={'white'}
+                  />
 
-          <View>
-            <TouchableOpacity onPress={handleLogout}>
-              <Text>Log Out</Text>
-            </TouchableOpacity>
+                  <Text style={styles.text}>Settings</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TouchableOpacity>
+                <View style={styles.drawerContent}>
+                  <LogoutIcon
+                    height={hp('3%')}
+                    width={wp('8%')}
+                    color={'white'}
+                  />
+
+                  <Text style={styles.text}>Log Out</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -95,36 +134,49 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    width: '75%',
+    width: wp('75%'),
     backgroundColor: 'black',
-    gap: 10,
-    padding: '5%',
+    padding: wp('5%'),
   },
   headingProfileContainer: {
+    marginVertical: hp('1%'),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: hp('2%'),
   },
-
   heading: {
-    fontSize: 20,
+    fontSize: wp('5%'),
+    color: 'white',
+    fontWeight: 'bold',
   },
-  subHeading: {
-    fontSize: 16,
+  headingTwo: {
+    marginVertical: hp('1%'),
+    fontSize: wp('5%'),
+    color: 'lightgrey',
   },
   profilePic: {
-    width: 50,
-    height: 50,
-    borderRadius: 15,
+    width: wp('12%'),
+    height: wp('12%'),
+    borderRadius: wp('3%'),
   },
   line: {
+    color: 'white',
     borderBottomColor: 'white',
-    borderBottomWidth: 2,
-    marginVertical: 10,
-    width: wp('70%'),
+    borderBottomWidth: 1,
+    marginVertical: hp('1%'),
+  },
+  drawerContentView: {
+    marginVertical: hp('3%'),
+  },
+  drawerContent: {
+    flexDirection: 'row',
+    gap: 8,
   },
   text: {
-    fontSize: 16,
+    fontSize: wp('5%'),
+    marginBottom: hp('2%'),
+    color: 'white',
   },
 });
 

@@ -6,15 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BackIcon from '../../Assets/Icons/BackIcon';
-import {Alert} from 'react-native';
-import auth from '@react-native-firebase/auth';
 
 export default function RegisterScreen({handleNavigate, navigation}) {
   const [name, setName] = useState('');
@@ -22,35 +19,7 @@ export default function RegisterScreen({handleNavigate, navigation}) {
   const [userNameOrEmail, setUserNameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
-  console.log('Register Screen', email);
-  console.log('Register Screen', confirmPassword);
-
-  async function handleSignUp() {
-    try {
-      setIsLoading(true);
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email.trim())) {
-        throw new Error('Invalid email address format');
-      }
-
-      await auth().createUserWithEmailAndPassword(email, confirmPassword);
-      // User signed in successfully
-
-      setName('');
-      setEmail('');
-      setUserNameOrEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      navigation.navigate('Login');
-    } catch (error) {
-      // Handle sign-in errors
-      console.log('Sign-up Failed', error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -122,13 +91,7 @@ export default function RegisterScreen({handleNavigate, navigation}) {
             style={styles.loginButton}
             activeOpacity={0.8}
             onPress={handleSignUp}>
-            <Text style={styles.loginButtonText}>
-              {isLoading ? (
-                <ActivityIndicator size={'small'} color="#29F300" />
-              ) : (
-                'Sign up'
-              )}
-            </Text>
+            <Text style={styles.loginButtonText}>Sign up</Text>
           </TouchableOpacity>
         </View>
       </View>

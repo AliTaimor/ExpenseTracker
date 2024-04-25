@@ -1,10 +1,23 @@
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 function CalendarScreen() {
+  const [selected, setSelected] = useState('');
   return (
     <View>
-      <Text>CalendarScreen</Text>
+      <Calendar
+        onDayPress={day => {
+          setSelected(day.dateString);
+        }}
+        markedDates={{
+          [selected]: {
+            selected: true,
+            disableTouchEvent: true,
+            selectedDotColor: 'orange',
+          },
+        }}
+      />
     </View>
   );
 }

@@ -6,6 +6,7 @@ import RegisterScreen from './WelcomeAndLoginScreens/RegisterScreen';
 import CalendarScreen from './CalendarScreen';
 import IncomeFormScreen from './FormScreens/IncomeFormScreen';
 import ExpenseFormScreen from './FormScreens/ExpenseFormScreen';
+import SettingsScreen from './SettingsScreen';
 export {
   HomeScreen,
   TransactionScreen,
@@ -15,4 +16,5 @@ export {
   CalendarScreen,
   IncomeFormScreen,
   ExpenseFormScreen,
+  SettingsScreen,
 };

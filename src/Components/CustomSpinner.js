@@ -1,21 +1,40 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Text} from 'react-native';
 
-const CustomSpinner = () => (
-  <View style={[styles.container, styles.horizontal]}>
-    <ActivityIndicator size="small" color="#0000ff" />
-  </View>
-);
+const CustomSpinner = ({
+  size,
+  color,
+  backgroundColor = null,
+  message = message,
+  marginVertical = marginVertical,
+  fontSize = fontSize,
+}) => {
+  if (size === 'small') return <ActivityIndicator size={size} color={color} />;
+  const containerStyles = {
+    backgroundColor: backgroundColor,
+  };
+  const textStyles = {
+    marginVertical: marginVertical,
+    fontSize: fontSize,
+  };
+  return (
+    <View style={[styles.container, containerStyles]}>
+      <ActivityIndicator size={size} color={color} />
+      <Text style={[styles.messageText, textStyles]}>{message}</Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 2,
   },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
+
+  messageText: {
+    fontWeight: 'bold',
   },
 });
 
