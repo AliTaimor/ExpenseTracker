@@ -17,6 +17,9 @@ function CalendarScreen() {
             selectedDotColor: 'orange',
           },
         }}
+        style={{
+          height: 350,
+        }}
       />
     </View>
   );

@@ -75,6 +75,11 @@ function Navigation() {
             component={Drawer}
             options={{headerShown: false}}
           />
+            <Stack.Screen
+            name="Settings"
+            component={SettingsContainer}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </MainProvider>
