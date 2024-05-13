@@ -5,7 +5,13 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-function HeaderComponent({headerFirstIcon, text, headerSecondIcon}) {
+function HeaderComponent({headerFirstIcon, text, headerSecondIcon, newIcon}) {
+  if (newIcon)
+    return (
+      <View style={styles.container}>
+        <View style={styles.newIconView}>{newIcon}</View>
+      </View>
+    );
   return (
     <View style={styles.container}>
       <View style={styles.hamburgerIconView}>{headerFirstIcon}</View>
@@ -31,6 +37,9 @@ const styles = StyleSheet.create({
   },
   hamburgerIconView: {
     padding: '6%',
+  },
+  newIconView:{
+    padding: '1%',
   },
   calendarIconView: {
     padding: '6%',

@@ -10,26 +10,22 @@ import {
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import CustomNotifications from '../../Components/CustomNotifications';
-import {useMainContext} from '../../Contexts/MainContext';
+// import {useMainContext} from '../../Contexts/MainContext';
 import {useRoute} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {formattedDate} from '../../Utils/helpers';
+import {useAddExpense} from '../../CustomHooks/useAddExpense';
+import {useToast} from 'react-native-toast-notifications';
 
 function ExpenseFormScreen() {
-  const {
-    dispatch,
-    isDatePickerVisible,
-    setDatePickerVisibility,
-    formattedDate,
-    postingData,
-    message,
-    isNotificationExpense,
-    editData,
-  } = useMainContext();
-
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const {addExpense} = useAddExpense();
+  const toast = useToast();
   const route = useRoute();
+
   const {index} = route.params || {};
   console.log('Expense Form screen', index);
 
@@ -40,7 +36,7 @@ function ExpenseFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.dateTimeEvent : formattedDate(new Date()),
+    index ? index.time : formattedDate(new Date()),
   );
 
   // date and time functions
@@ -60,30 +56,23 @@ function ExpenseFormScreen() {
 
   const handleAddExpense = () => {
     if (eventDescription && dateTimeEvent && inputValueEvent) {
-      dispatch({
-        type: 'addincomeData',
-        payload: {
-          description: eventDescription,
-          amount: parseFloat(inputValueEvent),
-          type: 'Expense',
-          createdAt: dateTimeEvent,
-        },
-      });
-      dispatch({
-        type: 'expNotification',
-        payload: {message: 'Data submitted successfully', notify: true},
-      });
-      postingData({
+      addExpense({
         description: eventDescription,
-        amount: parseFloat(inputValueEvent),
-        type: 'Expense',
-        dateTimeEvent,
+        amount: inputValueEvent,
+        time: dateTimeEvent,
+        type: 'expense',
       });
       setEventDescription('');
       setDateTimeEvent(formattedDate(new Date()));
       setInputValueEvent('');
     } else {
-      Alert.alert('one or more fields left empty');
+      toast.show('one or more fields left empty', {
+        type: 'danger',
+        placement: 'top',
+        duration: 3000,
+        offset: 30,
+        animationType: 'zoom-in',
+      });
     }
   };
 
@@ -96,11 +85,6 @@ function ExpenseFormScreen() {
       id: index.id,
     };
 
-    dispatch({
-      type: 'expenseNotification',
-      payload: {message: ' Data edited successfully ', notify: true},
-    });
-
     editData(newIndex);
     setEventDescription('');
     setDateTimeEvent(formattedDate(new Date()));
@@ -112,14 +96,6 @@ function ExpenseFormScreen() {
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
-        {isNotificationExpense && (
-          <CustomNotifications
-            message={message}
-            backgroundColor={'darkred'}
-            duration={1500}
-          />
-        )}
-
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>
             <Text style={styles.amountHeading}>Description</Text>

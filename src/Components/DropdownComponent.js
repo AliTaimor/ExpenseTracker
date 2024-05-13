@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {
   widthPercentageToDP as wp,

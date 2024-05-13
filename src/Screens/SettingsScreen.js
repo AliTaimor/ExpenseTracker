@@ -6,9 +6,8 @@ const SettingsScreen = ({currencyDropdownData}) => {
   return (
     <View style={styles.container}>
       <Text>SettingsScreen</Text>
-      <TouchableOpacity>
-        <Text>Clear All Records</Text>
-      </TouchableOpacity>
+      <Button title="Clear All" onPress={clearAll} color="red" />
+
       <DropdownComponent placeholder="Currency" data={currencyDropdownData} />
       <DropdownComponent
         placeholder="Date and Time Format"

@@ -5,29 +5,22 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Alert,
   ScrollView,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import CustomNotifications from '../../Components/CustomNotifications';
-import {useMainContext} from '../../Contexts/MainContext';
 import {useRoute} from '@react-navigation/native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {formattedDate} from '../../Utils/helpers';
+import {useAddIncome} from '../../CustomHooks/useAddIncome';
+import {useToast} from 'react-native-toast-notifications';
 
 function IncomeFormScreen() {
-  const {
-    isDatePickerVisible,
-    setDatePickerVisibility,
-    postingData,
-    dispatch,
-    formattedDate,
-    isNotificationIncome,
-    editData,
-    message,
-  } = useMainContext();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const {addIncome} = useAddIncome();
+  const toast = useToast();
 
   const route = useRoute();
   const {index} = route.params || {};
@@ -41,7 +34,7 @@ function IncomeFormScreen() {
     index ? index.description : '',
   );
   const [dateTimeEvent, setDateTimeEvent] = useState(
-    index ? index.dateTimeEvent : formattedDate(new Date()),
+    index ? index.time : formattedDate(new Date()),
   );
 
   // date and time states
@@ -61,30 +54,23 @@ function IncomeFormScreen() {
 
   const handleAddIncome = () => {
     if (eventDescription && dateTimeEvent && inputValueEvent) {
-      dispatch({
-        type: 'addincomeData',
-        payload: {
-          description: eventDescription,
-          amount: parseFloat(inputValueEvent),
-          type: 'Income',
-          createdAt: dateTimeEvent,
-        },
-      });
-      dispatch({
-        type: 'notification',
-        payload: {message: ' Data submitted successfully ', notify: true},
-      });
-      postingData({
+      addIncome({
         description: eventDescription,
-        amount: parseFloat(inputValueEvent),
-        type: 'Income',
-        dateTimeEvent,
+        amount: inputValueEvent,
+        time: dateTimeEvent,
+        type: 'income',
       });
       setEventDescription('');
       setDateTimeEvent(formattedDate(new Date()));
       setInputValueEvent('');
     } else {
-      Alert.alert('one or more fields left empty');
+      toast.show('one or more fields left empty', {
+        type: "danger",    
+        placement: 'top',
+        duration: 3000,
+        offset: 30,
+        animationType: 'zoom-in',
+      });
     }
   };
 
@@ -97,18 +83,10 @@ function IncomeFormScreen() {
       id: index.id,
     };
 
-    editData(newIndex);
-
-    dispatch({
-      type: 'notification',
-      payload: {message: ' Data edited successfully ', notify: true},
-    });
     setEventDescription('');
     setDateTimeEvent(formattedDate(new Date()));
     setInputValueEvent('');
   };
-
-  console.log('Notification', isNotificationIncome);
 
   return (
     <ScrollView
@@ -116,13 +94,13 @@ function IncomeFormScreen() {
       keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
         <View style={styles.notification}>
-          {isNotificationIncome && (
+          {/* {isSuccess && (
             <CustomNotifications
-              message={message}
+              message= "Added Income Successfully"
               backgroundColor={'green'}
               duration={1500}
             />
-          )}
+          )} */}
         </View>
         <View style={styles.infoView}>
           <View style={styles.descriptionBox}>

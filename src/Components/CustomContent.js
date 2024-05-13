@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {useMainContext} from '../Contexts/MainContext';
 import CustomSpinner from './CustomSpinner';
+import {useTransactions} from '../CustomHooks/useTransactions';
 
 function CustomContent() {
-  const {totalIncome, totalExpense, totalBalance, isLoading} = useMainContext();
+  const {isLoading, totalBalance, totalExpense, totalIncome} =
+    useTransactions();
 
   return (
     <View style={styles.contentContainer}>
@@ -13,7 +14,7 @@ function CustomContent() {
         {/* added the state prop to show the updated income data */}
 
         {isLoading ? (
-          <CustomSpinner size={'small'} color={"#0000ff"} />
+          <CustomSpinner size={'small'} color={'#0000ff'} />
         ) : (
           <Text style={styles.incomeContent}>{totalIncome} Rs</Text>
         )}
@@ -22,7 +23,7 @@ function CustomContent() {
         <Text style={styles.expenseText}>Expense</Text>
 
         {isLoading ? (
-          <CustomSpinner size={'small'} color={"#0000ff"}/>
+          <CustomSpinner size={'small'} color={'#0000ff'} />
         ) : (
           <Text style={styles.expenseContent}>{totalExpense} Rs</Text>
         )}
@@ -31,7 +32,7 @@ function CustomContent() {
         <Text style={styles.balanceText}>Balance</Text>
         {/* calculated balance on the top of the screen and shown on the balance content */}
         {isLoading ? (
-          <CustomSpinner size={'small'} color={"#0000ff"}/>
+          <CustomSpinner size={'small'} color={'#0000ff'} />
         ) : (
           <Text style={styles.balanceContent}>{totalBalance} Rs</Text>
         )}

@@ -11,8 +11,8 @@ export default function CustomNotifications({
   color = 'white',
   duration = 2000,
 }) {
-  const {dispatch, isNotificationIncome, isNotificationExpense} =
-    useMainContext();
+  // const {dispatch, isNotificationIncome, isNotificationExpense} =
+  //   useMainContext();
   const containerStyles = {
     width: width,
     backgroundColor: backgroundColor,
@@ -26,11 +26,7 @@ export default function CustomNotifications({
     if (!isNotificationIncome && !isNotificationExpense) return;
 
     setTimeout(() => {
-      if (isNotificationIncome) {
-        dispatch({type: 'notification', payload: {notify: false}});
-      } else {
-        dispatch({type: 'expNotification', payload: {notify: false}});
-      }
+    
     }, duration);
   }, [isNotificationIncome, isNotificationExpense]);
   return (
